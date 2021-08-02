@@ -54,7 +54,7 @@
           })
         "
       >
-        <img class="mobile" src="../assets/img/mobile.png" alt="" />
+        <img class="mobile" src="@/assets/img/mobile.png" alt="" />
       </div>
       <div class="text">登录 / 注册</div>
     </div>
@@ -121,7 +121,7 @@ export default {
 <style lang="less" scoped>
 .my-page {
   .my-info {
-    background: url('../assets/img/banner.png') no-repeat;
+    background: url('../../assets/img/banner.png') no-repeat;
     background-size: cover;
     .base-info {
       box-sizing: border-box;
@@ -177,7 +177,7 @@ export default {
   }
   .not-login {
     height: 180px;
-    background: url('../assets/img/banner.png') no-repeat;
+    background: url('../../assets/img/banner.png') no-repeat;
     background-size: cover;
     display: flex;
     flex-direction: column;

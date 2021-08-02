@@ -5,23 +5,38 @@
     </keep-alive>
     <!-- 底部导航 -->
     <van-tabbar v-model="active" route>
-      <van-tabbar-item icon="home-o" to="/">首页</van-tabbar-item>
-      <van-tabbar-item icon="comment-o" to="/answer">问答</van-tabbar-item>
-      <van-tabbar-item icon="manager-o" to="/my">我的</van-tabbar-item>
+      <van-tabbar-item to="/">
+        <template #icon="props">
+          <i class="iconfont">{{ props.active ? "&#xe621;" : "&#58914;" }}</i>
+        </template>
+      </van-tabbar-item>
+      <van-tabbar-item>
+        <i class="iconfont">&#xe694;</i>
+      </van-tabbar-item>
+      <van-tabbar-item icon="setting-o" badge="3" to="/my">
+        <template #icon="props">
+          <i class="iconfont">{{ props.active ? "&#xe6bc;" : "&#xe6bd;" }}</i>
+        </template>
+      </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Layout',
-  data () {
+  name: "Layout",
+  data() {
     return {
-      active: 0
-    }
-  }
-}
+      active: 0,
+    };
+  },
+};
 </script>
 
-<style>
+<style lang="less" scoped>
+  .iconfont{
+    font-size: 24px;
+  }
+</style>>
+
 </style>

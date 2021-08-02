@@ -1,5 +1,6 @@
 <template>
-  <div class="answer-page">answer</div>
+  <div class="answer-page">
+  <i class="iconfont">&#xe622;</i></div>
 </template>
 
 <script>

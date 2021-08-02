@@ -66,6 +66,7 @@ const plugins = [
   List,
   Search
 ]
+import '@/assets/icons/iconfont.css'
 import '@/assets/css/global.less'
 plugins.forEach(plugin => {
   Vue.use(plugin)

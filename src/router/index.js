@@ -26,7 +26,7 @@ const routes = [
       {
         path: '/my',
         name: 'my',
-        component: () => import('@/views/My'),
+        component: () => import('@/views/my/My'),
         meta: { isUser: false }
       }
     ]
