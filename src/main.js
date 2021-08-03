@@ -68,12 +68,16 @@ const plugins = [
 ]
 import '@/assets/icons/iconfont.css'
 import '@/assets/css/global.less'
+import axios from 'axios'
 plugins.forEach(plugin => {
   Vue.use(plugin)
 })
 
 dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
+
+// 开启跨域允许cookie
+axios.defaults.withCredentials = true;
 
 
 Vue.filter('relativeTime', value => {
