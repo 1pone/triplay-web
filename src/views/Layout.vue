@@ -4,13 +4,13 @@
       <router-view />
     </keep-alive>
     <!-- 底部导航 -->
-    <van-tabbar v-model="active" route>
+    <van-tabbar v-model="active" route v-if="$route.meta.footShow">
       <van-tabbar-item to="/">
         <template #icon="props">
           <i class="iconfont">{{ props.active ? "&#xe621;" : "&#58914;" }}</i>
         </template>
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item  to="/publish">
         <i class="iconfont publish">&#xe694;</i>
       </van-tabbar-item>
       <van-tabbar-item icon="setting-o" badge="3" to="/my">

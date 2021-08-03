@@ -47,12 +47,15 @@ export default {
   top: 0;
   background-color: #2377e2;
   z-index: 120;
-  /deep/.van-nav-bar__content {
+  /deep/ .van-nav-bar__content {
     height: 1.75rem;
   }
   .user-photo {
     width: 36px;
   }
+}
+/deep/ .van-hairline--bottom::after {
+  border-bottom-color: #2377e2;
 }
 .ph {
   width: 100%;
