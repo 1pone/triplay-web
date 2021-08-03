@@ -142,6 +142,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.app-nav-bar{
+  height: 1.75rem;
+  background-color: #2377e2;
+  /deep/.van-nav-bar__content{
+    height: 1.75rem;
+  }
+}
 .van-popup {
   background-color: #f5f7f9;
 }
