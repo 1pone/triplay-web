@@ -3,6 +3,9 @@ import JSONbig from 'json-bigint'
 import router from '@/router'
 import { Toast } from 'vant'
 import store from '@/store'
+
+// 跨域设置， 用于保留cookie
+axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL: process.env.VUE_APP_URL,
   timeout: 1000 * 12,
@@ -15,7 +18,7 @@ const instance = axios.create({
   }]
 })
 
-instance.interceptors.request.use(config => {
+instance.interceptors.request.use(config => { 
   // console.log(config);
   const user = store.state.user
   if (user) {
