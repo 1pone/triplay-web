@@ -18,24 +18,24 @@
     >
       <van-cell-group class="login-cell-group" inset>
         <van-field
-          v-model="user.mobile"
+          v-model="user.email"
           :rules="loginRules.moibile"
-          placeholder="请输入手机号"
+          placeholder="请输入邮箱"
           label="邮箱"
           name="email"
         />
         <van-field
-          v-model="user.code"
+          v-model="user.pwd"
           clearable
           :rules="loginRules.code"
-          placeholder="请输入验证码"
+          placeholder="请输入密码"
           label="密码"
           name="code"
         >
         </van-field>
       </van-cell-group>
       <div class="login-btn-wrap">
-        <van-button block round type="info" class="login-btn">登录</van-button>
+        <van-button block round type="info" class="login-btn" @click="login">登录</van-button>
       </div>
     </van-form>
 
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { loginApi, sendCodeApi } from "@/api/user";
+import { loginApi, getUserlabel } from "@/api/user";
 import { loginRules } from "@/utils/validateRules";
 export default {
   name: "Login",
@@ -91,9 +91,19 @@ export default {
       switch(data.code){
         case 0: {
           this.$toast.success("登录成功");
+          // 本地保存用户数据
           sessionStorage.setItem('user', JSON.stringify(data.data));
-          console.log(sessionStorage.getItem('user'))
-          this.$router.push("/");
+          // 获取用户标签
+          const labelRes = await getUserlabel(data.data.userId);
+          // 若已经选择标签，则跳转首页
+          if(labelRes.data.label){
+            this.$router.push("/");
+          }
+          else{
+            this.$router.push("/hobby");
+          }
+          // 否则跳转标签选择页 hobby
+          console.log(JSON.parse(sessionStorage.getItem('user')))
           console.log('push done')
         } break;
         case 1001: 
@@ -113,7 +123,7 @@ export default {
 
   },
   created: function(){
-    this.login();
+    // this.login();
   }
 };
 </script>
