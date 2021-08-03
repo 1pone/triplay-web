@@ -90,7 +90,7 @@ export default {
       console.log(data);
       switch(data.code){
         case 0: {
-          this.$toast.success("登陆成功");
+          this.$toast.success("登录成功");
           sessionStorage.setItem('user', JSON.stringify(data.data));
           console.log(sessionStorage.getItem('user'))
           this.$router.push("/");
