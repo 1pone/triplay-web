@@ -7,9 +7,6 @@ export const loginApi = data => {
 export const getUserApi = () => {
   return api('get', '/user/getUserInfo')
 }
-export const getUserInfoApi = () => {
-  return api('get', '/user/getUserLabel')
-}
 
 export const getUserChannel = () => {
   return api('get', '/app/v1_0/user/channels')
