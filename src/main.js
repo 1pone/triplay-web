@@ -12,6 +12,7 @@ import {
   NavBar,
   Cell,
   CellGroup,
+  Calendar,
   Col,
   Row,
   Form,
@@ -34,7 +35,8 @@ import {
   Icon,
   PullRefresh,
   List,
-  Search
+  Search,
+  Stepper 
 } from 'vant'
 
 const plugins = [
@@ -42,6 +44,7 @@ const plugins = [
   NavBar,
   Cell,
   CellGroup,
+  Calendar,
   Col,
   Row,
   Divider,
@@ -64,7 +67,8 @@ const plugins = [
   Icon,
   PullRefresh,
   List,
-  Search
+  Search,
+  Stepper
 ]
 import '@/assets/icons/iconfont.css'
 import '@/assets/css/global.less'
