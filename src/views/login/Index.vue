@@ -18,17 +18,17 @@
     >
       <van-cell-group class="login-cell-group" inset>
         <van-field
-          v-model="user.mobile"
+          v-model="user.email"
           :rules="loginRules.moibile"
-          placeholder="请输入手机号"
+          placeholder="请输入邮箱"
           label="邮箱"
           name="email"
         />
         <van-field
-          v-model="user.code"
+          v-model="user.pwd"
           clearable
           :rules="loginRules.code"
-          placeholder="请输入验证码"
+          placeholder="请输入密码"
           label="密码"
           name="code"
         >
@@ -59,22 +59,23 @@
           fit="cover"
           round
       />
-      <p class="text_fastLogin">SSO</p></van-col></van-col>
+      <p class="text_fastLogin">SSO</p></van-col>
       <van-col span="6"></van-col>
     </van-row>
   </div>
 </template>
 
 <script>
-import { loginApi, sendCodeApi } from "@/api/user";
+import { loginApi } from "@/api/user";
+import { getUserLabel } from "@/api/label"
 import { loginRules } from "@/utils/validateRules";
 export default {
   name: "Login",
   data() {
     return {
       user: {
-        mobile: "17090086870",
-        code: "246810",
+        email: "asdf@qq.com",
+        pwd: "123456",
       },
       loginRules,
       isCountDown: false,
@@ -89,19 +90,33 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      try {
-        const { data } = await loginApi(this.user);
-        if (data.data.token) {
-          this.$toast.success("登陆成功");
-          this.$store.commit("SET_USER", data.data.token);
-          this.$store.commit("SET_REFRESH", data.data.refresh_token);
-          // this.$router.push(this.$route.query.redirect || '/')
-          this.$router.push("/");
-        }
-      } catch (error) {
-        this.$toast.fail("登录失败，手机号或验证码错误");
+
+      const res = await loginApi(this.user);
+      const data = res.data;
+      console.log(res);
+      switch (data.code) {
+        case 0:
+          {
+            this.$toast.success("登录成功");
+            // 本地保存用户数据
+            sessionStorage.setItem("user", JSON.stringify(data.data));
+            // 获取用户标签
+            const labelRes = await getUserLabel(data.data.userId);
+            console.log(labelRes);
+            // 若已经选择标签，则跳转首页
+            if (!labelRes.data.userLabel) {
+              this.$router.push("/");
+            } else {  // 否则跳转标签选择页 hobby
+              this.$router.push("/hobby");
+            }
+          }
+          break;
+        case 1001:
+          this.$toast.fail("登录失败，邮箱或密码错误");
+          break;
       }
     },
+
     onFailed(error) {
       if (error.errors[0]) {
         this.$toast({
@@ -109,32 +124,12 @@ export default {
           position: "top",
         });
       }
-    },
-    // 发送验证码
-    async sendCode() {
-      try {
-        await this.$refs["loginForm"].validate("mobile");
-        this.isSendLoad = true;
-        await sendCodeApi(this.user.mobile);
-        this.isCountDown = true;
-      } catch (err) {
-        let message = "";
-        console.log(err);
-        if (err && err.response && err.response.status === 429) {
-          message = "发送太频繁了，请稍后重试";
-        } else if (err.name === "mobile") {
-          message = err.message;
-        } else {
-          message = "发送失败，请稍后重试";
-        }
-        this.$toast({
-          message,
-          position: "top",
-        });
-      }
-      this.isSendLoad = false;
-    },
-  },
+    }, // onFailed
+  }, // method
+
+  created: function(){
+    // this.login();
+  }
 };
 </script>
 
@@ -174,7 +169,7 @@ export default {
     .icon_fastLogin {
       width: 50%;
     }
-    .text_fastLogin{
+    .text_fastLogin {
       font-size: 0.373rem;
       color: #969799;
       margin: 0;
