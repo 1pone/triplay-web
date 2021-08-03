@@ -14,8 +14,8 @@
           $router.push({
             name: 'login',
             query: {
-              redirect: '/my',
-            },
+              redirect: '/my'
+            }
           })
         "
       >
@@ -119,20 +119,21 @@ export default {
   name: "My",
   data() {
     return {
+      active: 0,
       currentUser: {},
       userImg: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
-        imgAlt: "userPhoto",
+        imgAlt: "userPhoto"
       },
       list: [],
       loading: false,
       isLoading: false,
-      finished: false,
+      finished: false
     };
   },
   components: {
-    NavBar,
+    NavBar
   },
   methods: {
     async getUserDetail() {
@@ -160,16 +161,16 @@ export default {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-    },
+    }
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user"])
   },
   activated() {
     if (this.user) {
       this.getUserDetail();
     }
-  },
+  }
 };
 </script>
 

@@ -54,15 +54,48 @@
           label="时间"
           placeholder="请选择活动时间"
           @click="showTimePicker = true"
+          :rules="[{ required: true }]"
         />
-        <van-field name="num" label="人数">
+        <van-field name="num" label="人数" :rules="[{ required: true }]">
           <template #input>
             <van-stepper v-model="activity.num" />
           </template>
         </van-field>
       </van-form>
     </van-cell-group>
-
+    <van-cell-group class="publish-form" validate-first inset>
+      <van-field
+        v-model="invitedEmail"
+        center
+        clearable
+        label="邀请"
+        placeholder="请输入邀请人邮箱"
+        :rules="[{ pattern, message: '输入的邮箱格式有误' }]"
+      >
+        <template #button>
+          <van-button
+            round
+            size="small"
+            color="#1989fa"
+            type="primary"
+            @click="onAddEmail"
+            >添加</van-button
+          >
+        </template>
+      </van-field>
+      <van-cell class="invite" title="已邀请">
+        <template #right-icon>
+          <van-image
+            class="user-photo"
+            src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png"
+            alt="userPhoto"
+            round
+            v-for="e in activity.invited"
+            :key="e"
+          />
+        </template>
+      </van-cell>
+    </van-cell-group>
     <van-button
       class="btn-submit"
       round
@@ -98,7 +131,7 @@ import { mapState } from "vuex";
 export default {
   name: "Publish",
   components: {
-    NavBar,
+    NavBar
   },
   data() {
     return {
@@ -111,30 +144,32 @@ export default {
         intro: "",
         date: "",
         time: "",
-        num: 0,
-        invited: [],
+        num: 2,
+        invited: []
       },
+      invitedEmail: "",
+      pattern: /^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@trip.com/,
       showTypePicker: false,
       showDatePicker: false,
       showTimePicker: false,
-      activityList: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
+      activityList: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"]
     };
   },
   created() {},
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user"])
   },
   watch: {
     user() {
       this.active = 0;
-    },
+    }
   },
   methods: {
     cancelPublish() {
       this.$dialog
         .confirm({
           title: "取消提示",
-          message: "确认取消发布新活动吗？",
+          message: "确认取消发布新活动吗？"
         })
         .then(() => {
           this.$router.push("/");
@@ -146,9 +181,8 @@ export default {
       this.showTypePicker = false;
     },
     onDateConfirm(date) {
-      this.activity.date = `${date.getYear() + 1900}/${
-        date.getMonth() + 1
-      }/${date.getDate()}`;
+      this.activity.date = `${date.getYear() + 1900}/${date.getMonth() +
+        1}/${date.getDate()}`;
       this.showDatePicker = false;
     },
     onTimeConfirm(time) {
@@ -157,8 +191,25 @@ export default {
     },
     onSubmit(values) {
       console.log("submit", values);
+      this.$toast.success("发布成功");
+      this.$router.push("/");
     },
-  },
+    onAddEmail() {
+      if (/^([a-zA-Z]|[0-9])(\w|\-)+@trip.com/.test(this.invitedEmail)) {
+        for (let e of this.activity.invited) {
+          if (e == this.invitedEmail) {
+            console.log("email exist");
+            return;
+          }
+        }
+        this.activity.invited.push(this.invitedEmail);
+        this.invitedEmail = "";
+        console.log("add email");
+      } else {
+        console.log("wrong email");
+      }
+    }
+  }
 };
 </script>
 
@@ -187,6 +238,14 @@ export default {
     width: 80%;
     text-align: center;
     margin: 1rem auto;
+  }
+  .user-photo {
+    position: relative;
+    width: 36px;
+    margin: 0.25rem auto;
+  }
+  /deep/ .van-cell__title {
+    color: #646566;
   }
 }
 

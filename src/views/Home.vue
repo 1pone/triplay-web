@@ -1,13 +1,18 @@
 <template>
   <div class="home-page">
-    <nav-bar title="程汇玩" :imgSrc="img.imgSrc" :imgAlt="img.imgAlt"></nav-bar>
+    <nav-bar
+      class="nav-bar"
+      title="程汇玩"
+      :imgSrc="img.imgSrc"
+      :imgAlt="img.imgAlt"
+    ></nav-bar>
     <van-button
       class="btn-search"
       icon="search"
       type="info"
       round
       size="small"
-      to="/search"
+      @click="editChannel = true"
       >搜索</van-button
     >
     <van-pull-refresh
@@ -32,16 +37,11 @@
       class="channel-edit-popup"
       closeable
       close-icon-position="top-left"
-      get-container="body"
-      :style="{ height: '100%' }"
+      get-container=".nav-bar"
+      round
+      :style="{ height: '70%', background: '#2377e2' }"
     >
-      <channel-edit
-        :userChannels="channelList"
-        :active="active"
-        @update-channel="channelList = $event"
-        @close="editChannel = false"
-        @update-active="active = $event"
-      ></channel-edit>
+      <div style="margin-top:3rem">搜索页面</div>
     </van-popup>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
   components: {
     ChannelEdit,
     ArticleList,
-    NavBar,
+    NavBar
   },
   data() {
     return {
@@ -66,20 +66,21 @@ export default {
       channelList: [],
       editChannel: false,
       list: [],
+      loading: false,
       isLoading: false,
       finished: false,
       img: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
-        imgAlt: "userPhoto",
-      },
+        imgAlt: "userPhoto"
+      }
     };
   },
   created() {
     this.getChannels();
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user"])
   },
   watch: {
     user() {
@@ -87,7 +88,7 @@ export default {
     },
     channelList(newval) {
       console.log("userchannel", newval);
-    },
+    }
   },
   methods: {
     toUserInfo() {
@@ -127,12 +128,12 @@ export default {
         }
       }, 1000);
     },
-     onRefresh() {
+    onRefresh() {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -221,6 +222,10 @@ export default {
   .ph {
     width: 100%;
     height: 1.5rem;
+  }
+  /deep/.channel-edit-popup,
+  /deep/.van-overlay {
+    z-index: 20 !important;
   }
 }
 </style>
