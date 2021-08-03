@@ -236,7 +236,6 @@ export default {
 
   .btn-submit {
     width: 80%;
-    text-align: center;
     margin: 1rem auto;
   }
   .user-photo {

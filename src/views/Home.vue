@@ -12,9 +12,10 @@
       type="info"
       round
       size="small"
-      @click="editChannel = true"
+      @click="showSearchBoard = true"
       >搜索</van-button
     >
+
     <van-pull-refresh
       v-model="isLoading"
       success-text="刷新成功"
@@ -31,17 +32,89 @@
       </van-list>
     </van-pull-refresh>
     <div class="ph"></div>
+
+    <!-- 弹出层 -->
     <van-popup
-      v-model="editChannel"
+      v-model="showSearchBoard"
       position="top"
       class="channel-edit-popup"
       closeable
       close-icon-position="top-left"
       get-container=".nav-bar"
       round
-      :style="{ height: '70%', background: '#2377e2' }"
+      :style="{ height: '65%', background: '#2377e2' }"
     >
-      <div style="margin-top:3rem">搜索页面</div>
+      <div style="margin-top:2.5rem">
+        <van-cell-group class="publish-form" inset>
+          <van-form ref="searchForm" @submit="onSearch">
+            <van-field
+              name="keyword"
+              v-model="search.keyword"
+              label="关键词"
+              placeholder="请输入活动关键词"
+            />
+            <van-field
+              readonly
+              clickable
+              :value="search.tpye"
+              name="tpye"
+              label="类型"
+              placeholder="请选择活动类型"
+              @click="showTypePicker = true"
+            />
+            <van-field
+              readonly
+              clickable
+              name="calendar"
+              :value="search.date"
+              label="日期"
+              placeholder="请选择活动日期"
+              @click="showDatePicker = true"
+            />
+            <van-field
+              readonly
+              clickable
+              name="time"
+              :value="search.time"
+              label="时间"
+              placeholder="请选择活动时间"
+              @click="showTimePicker = true"
+            />
+            <van-field name="num" label="人数" :rules="[{ required: true }]">
+              <template #input>
+                <van-stepper v-model="search.num" />
+              </template>
+            </van-field>
+          </van-form>
+        </van-cell-group>
+      </div>
+      <div style="margin-top:1rem">
+        <van-button
+          class="btn-search-confirm"
+          block
+          round
+          color="#ff9914"
+          @click="$refs.searchForm.submit()"
+          >搜索</van-button
+        >
+      </div>
+    </van-popup>
+    <van-popup v-model="showTypePicker" position="bottom">
+      <van-picker
+        show-toolbar
+        :columns="activityList"
+        @confirm="onTypeConfirm"
+        @cancel="showTypePicker = false"
+      />
+    </van-popup>
+
+    <van-calendar v-model="showDatePicker" @confirm="onDateConfirm" />
+    <van-popup v-model="showTimePicker" position="bottom">
+      <van-datetime-picker
+        type="time"
+        @confirm="onTimeConfirm"
+        @cancel="showTimePicker = false"
+      />
     </van-popup>
   </div>
 </template>
@@ -64,11 +137,23 @@ export default {
     return {
       active: 0,
       channelList: [],
-      editChannel: false,
+      showSearchBoard: false,
       list: [],
+      search: {
+        keyword: "",
+        type: "",
+        date: "",
+        time: "",
+        num: 2
+      },
+      activity: {},
       loading: false,
       isLoading: false,
       finished: false,
+      showTypePicker: false,
+      showDatePicker: false,
+      showTimePicker: false,
+      activityList: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
       img: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
@@ -132,6 +217,24 @@ export default {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
+    },
+
+    onTypeConfirm(type) {
+      this.search.tpye = type;
+      this.showTypePicker = false;
+    },
+    onDateConfirm(date) {
+      this.search.date = `${date.getYear() + 1900}/${date.getMonth() +
+        1}/${date.getDate()}`;
+      this.showDatePicker = false;
+    },
+    onTimeConfirm(time) {
+      this.search.time = time;
+      this.showTimePicker = false;
+    },
+    onSearch(value) {
+      console.log("search", value);
+      this.showSearchBoard = false;
     }
   }
 };
@@ -166,7 +269,7 @@ export default {
     background-color: #ffffff;
     border: none;
 
-    z-index: 100;
+    z-index: 19;
     .van-icon {
       font-size: 16px;
     }
@@ -226,6 +329,10 @@ export default {
   /deep/.channel-edit-popup,
   /deep/.van-overlay {
     z-index: 20 !important;
+  }
+  .btn-search-confirm {
+    width: 80%;
+    margin: 0 auto;
   }
 }
 </style>
