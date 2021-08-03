@@ -1,47 +1,12 @@
 <template>
   <div class="my-page">
     <!-- 已登录 -->
-    <van-cell-group v-if="user" class="my-info">
-      <van-cell class="base-info" :border="false" center>
-        <van-image
-          class="avatar"
-          slot="icon"
-          round
-          fit="cover"
-          :src="currentUser.photo"
-        />
-        <div class="name" slot="title">{{ currentUser.name }}</div>
-        <van-button class="update-btn" size="small" round to="/user/profile"
-          >编辑信息</van-button
-        >
-      </van-cell>
-      <van-grid class="data-info" :boder="false">
-        <van-grid-item class="data-info-item">
-          <div class="text-wrap" slot="text">
-            <div class="count">{{ currentUser.art_count }}</div>
-            <div class="text">头条</div>
-          </div>
-        </van-grid-item>
-        <van-grid-item class="data-info-item">
-          <div class="text-wrap" slot="text">
-            <div class="count">{{ currentUser.follow_count }}</div>
-            <div class="text">关注</div>
-          </div>
-        </van-grid-item>
-        <van-grid-item class="data-info-item">
-          <div class="text-wrap" slot="text">
-            <div class="count">{{ currentUser.fans_count }}</div>
-            <div class="text">粉丝</div>
-          </div>
-        </van-grid-item>
-        <van-grid-item class="data-info-item">
-          <div class="text-wrap" slot="text">
-            <div class="count">{{ currentUser.like_count }}</div>
-            <div class="text">获赞</div>
-          </div>
-        </van-grid-item>
-      </van-grid>
-    </van-cell-group>
+    <nav-bar
+      v-if="user"
+      title="我的"
+      :imgSrc="userImg.imgSrc"
+      :imgAlt="userImg.imgAlt"
+    ></nav-bar>
     <!-- 未登录 -->
     <div v-else class="not-login">
       <div
@@ -49,8 +14,8 @@
           $router.push({
             name: 'login',
             query: {
-              redirect: '/my'
-            }
+              redirect: '/my',
+            },
           })
         "
       >
@@ -58,7 +23,8 @@
       </div>
       <div class="text">登录 / 注册</div>
     </div>
-    <van-grid class="nav-grid mb-4" :column-num="2">
+    <!-- -->
+    <!-- <van-grid class="nav-grid mb-4" :column-num="2">
       <van-grid-item
         class="nav-grid-item"
         icon-prefix="toutiao"
@@ -71,57 +37,143 @@
         icon="lishi"
         text="历史"
       />
-    </van-grid>
-    <van-cell title="消息通知" is-link to="/" />
-    <van-cell class="mb-4" title="小智同学" is-link to="/" />
-    <van-cell
-      v-if="user"
-      class="logout-cell"
-      title="退出登录"
-      @click="logout"
-    />
+    </van-grid> -->
+    <van-tabs v-model="active" swipeable animated>
+      <van-tab title="发布">
+        <van-pull-refresh
+          v-model="isLoading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+          offest="100"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in list" :key="item" :title="item" />
+          </van-list>
+        </van-pull-refresh>
+      </van-tab>
+      <van-tab title="抱团"
+        ><van-pull-refresh
+          v-model="isLoading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+          offest="100"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in list" :key="item" :title="item" />
+          </van-list> </van-pull-refresh
+      ></van-tab>
+      <van-tab title="受邀"
+        ><van-pull-refresh
+          v-model="isLoading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+          offest="100"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in list" :key="item" :title="item" />
+          </van-list> </van-pull-refresh
+      ></van-tab>
+      <van-tab title="历史"
+        ><van-pull-refresh
+          v-model="isLoading"
+          success-text="刷新成功"
+          @refresh="onRefresh"
+          offest="100"
+        >
+          <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="onLoad"
+          >
+            <van-cell v-for="item in list" :key="item" :title="item" />
+          </van-list> </van-pull-refresh
+      ></van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
-import { getUserApi } from '@/api/user'
-import { mapState } from 'vuex'
+import NavBar from "@/components/NavBar";
+import { getUserApi } from "@/api/user";
+import { mapState } from "vuex";
 export default {
-  name: 'My',
-  data () {
+  name: "My",
+  data() {
     return {
-      currentUser: {}
-    }
+      currentUser: {},
+      userImg: {
+        imgSrc:
+          "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
+        imgAlt: "userPhoto",
+      },
+      list: [],
+      loading: false,
+      isLoading: false,
+      finished: false,
+    };
+  },
+  components: {
+    NavBar,
   },
   methods: {
-    async getUserDetail () {
-      const { data } = await getUserApi()
-      this.currentUser = data.data
+    async getUserDetail() {
+      const { data } = await getUserApi();
+      this.currentUser = data.data;
     },
-    logout () {
-      this.$dialog.confirm({
-        title: '退出提示',
-        message: '确认退出吗？'
-      }).then(() => {
-        this.$store.commit('SET_USER', null)
-      }).catch(() => { })
-    }
+    onLoad() {
+      // 异步更新数据
+      // setTimeout 仅做示例，真实场景中一般为 ajax 请求
+      setTimeout(() => {
+        for (let i = 0; i < 15; i++) {
+          this.list.push(this.list.length + 1);
+        }
+
+        // 加载状态结束
+        this.loading = false;
+
+        // 数据全部加载完成
+        if (this.list.length >= 40) {
+          this.finished = true;
+        }
+      }, 1000);
+    },
+    onRefresh() {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
+    },
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(["user"]),
   },
-  activated () {
+  activated() {
     if (this.user) {
-      this.getUserDetail()
+      this.getUserDetail();
     }
-  }
-}
+  },
+};
 </script>
 
 <style lang="less" scoped>
 .my-page {
   .my-info {
-    background: url('../../assets/img/banner.png') no-repeat;
+    background: url("../../assets/img/banner.png") no-repeat;
     background-size: cover;
     .base-info {
       box-sizing: border-box;
@@ -171,13 +223,13 @@ export default {
     /deep/ .van-grid-item__content {
       background-color: unset;
     }
-    [class*='van-hairline']::after {
+    [class*="van-hairline"]::after {
       border: 0;
     }
   }
   .not-login {
     height: 180px;
-    background: url('../../assets/img/banner.png') no-repeat;
+    background: url("../../assets/img/banner.png") no-repeat;
     background-size: cover;
     display: flex;
     flex-direction: column;
