@@ -35,7 +35,7 @@
         </van-field>
       </van-cell-group>
       <div class="login-btn-wrap">
-        <van-button block round type="info" class="login-btn" @click="login">登录</van-button>
+        <van-button block round type="info" class="login-btn">登录</van-button>
       </div>
     </van-form>
 
@@ -62,7 +62,8 @@
 </template>
 
 <script>
-import { loginApi, getUserlabel } from "@/api/user";
+import { loginApi } from "@/api/user";
+import { getUserLabel } from "@/api/label"
 import { loginRules } from "@/utils/validateRules";
 export default {
   name: "Login",
@@ -78,7 +79,6 @@ export default {
     };
   },
   methods: {
-    
     // 登录
     async login() {
       this.$toast.loading({
@@ -86,30 +86,31 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      const { data } = await loginApi(this.user);
-      console.log(data);
-      switch(data.code){
-        case 0: {
-          this.$toast.success("登录成功");
-          // 本地保存用户数据
-          sessionStorage.setItem('user', JSON.stringify(data.data));
-          // 获取用户标签
-          const labelRes = await getUserlabel(data.data.userId);
-          // 若已经选择标签，则跳转首页
-          if(labelRes.data.label){
-            this.$router.push("/");
-          }
-          else{
-            this.$router.push("/hobby");
-          }
-          // 否则跳转标签选择页 hobby
-          console.log(JSON.parse(sessionStorage.getItem('user')))
-          console.log('push done')
-        } break;
-        case 1001: 
-        this.$toast.fail("登录失败，邮箱或密码错误"); break;
-      } 
 
+      const res = await loginApi(this.user);
+      const data = res.data;
+      console.log(res);
+      switch (data.code) {
+        case 0:
+          {
+            this.$toast.success("登录成功");
+            // 本地保存用户数据
+            sessionStorage.setItem("user", JSON.stringify(data.data));
+            // 获取用户标签
+            const labelRes = await getUserLabel(data.data.userId);
+            console.log(labelRes);
+            // 若已经选择标签，则跳转首页
+            if (!labelRes.data.userLabel) {
+              this.$router.push("/");
+            } else {  // 否则跳转标签选择页 hobby
+              this.$router.push("/hobby");
+            }
+          }
+          break;
+        case 1001:
+          this.$toast.fail("登录失败，邮箱或密码错误");
+          break;
+      }
     },
 
     onFailed(error) {
@@ -119,9 +120,9 @@ export default {
           position: "top",
         });
       }
-    },
+    }, // onFailed
+  }, // method
 
-  },
   created: function(){
     // this.login();
   }
@@ -164,7 +165,7 @@ export default {
     .icon_fastLogin {
       width: 50%;
     }
-    .text_fastLogin{
+    .text_fastLogin {
       font-size: 0.373rem;
       color: #969799;
       margin: 0;

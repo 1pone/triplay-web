@@ -7,9 +7,11 @@
         plain
         round
         type="info"
-        v-for="hobby in hobbyList"
-        :key="hobby"
-        >{{ hobby }}
+        v-for="(hobby, index) in hobbyList"
+        :key="index"
+        @click="select(hobby.labelId)"
+        :class="{selectedLabel : selected[hobby.labelId]}"
+        >{{ hobby.labelName }}
       </van-button>
       <p @click="getHobby">换一批</p>
     </div>
@@ -21,34 +23,63 @@
   </div>
 </template>
 <script>
+import { getLabelPage, saveUserLabel } from "@/api/label";
 export default {
   data() {
     return {
-      hobbyList: [
-        "篮球",
-        "羽毛球",
-        "乒乓球",
-        "网球",
-        "瑜伽",
-        "滑板",
-        "狼人杀",
-        "剧本杀",
-        "三国杀",
-        "飞行棋",
-        "象棋",
-      ],
+      hobbyList: [],
+      selected:[],
+      page: 1,
+      limit:10
     };
   },
   methods: {
-    getHobby() {},
-    enter() {},
+    async getHobby() {
+      const res = await getLabelPage(this.page, this.limit);
+      console.log(res)
+      this.hobbyList = res.data.page.list;
+      // 轮换页号
+      this.page %= res.data.page.totalPage;
+      this.page++;
+    },
+
+    // 选择某一标签
+    select(labelId){
+      this.selected[labelId] = !this.selected[labelId];
+      console.log(this.selected)
+      this.$forceUpdate()
+    },
+
+    async enter() {
+      // 获取当前选择的标签
+      let labelList = [];
+      for(let labelId in this.selected){
+        if(this.selected[labelId]){
+          labelList.push({labelId});
+        }
+      }
+      console.log(labelList);
+      // 获取保存的用户ID
+      let userId = JSON.parse(sessionStorage.getItem("user")).userId;
+      // 保存用户标签
+      let res = await saveUserLabel({userId ,labelList});
+      console.log(res);
+      // if(res.)
+    },
     skip() {
       this.$router.push("/");
     },
+
   },
+  created: function(){
+    this.getHobby();
+  }
 };
 </script>
 <style lang="less" scoped>
+.selectedLabel{
+  background-color: #b7dbff;
+}
 .hobby-page {
   .bg {
     position: absolute;
