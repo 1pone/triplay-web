@@ -1,11 +1,6 @@
 <template>
   <div class="user-profile">
-    <van-nav-bar
-      class="app-nav-bar"
-      title="个人信息"
-      left-arrow
-      @click-left="$router.back()"
-    />
+    <nav-bar title="个人信息" :leftArrow="true"></nav-bar>
     <input
       type="file"
       accept="image/*"
@@ -13,10 +8,15 @@
       ref="file"
       @change="onFileChange"
     />
-    <van-cell title="头像" is-link center @click="$refs.file.click()">
-      <van-image width="30" height="30" round fit="cover" :src="user.photo">
-      </van-image>
-    </van-cell>
+    <van-image
+      class="userPhoto"
+      round
+      fit="cover"
+      src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png"
+      alt="userPhoto"
+      @click="$refs.file.click()"
+    >
+    </van-image>
     <van-cell
       title="昵称"
       is-link
@@ -24,16 +24,15 @@
       @click="isEditName = true"
     ></van-cell>
     <van-cell
-      title="性别"
-      is-link
-      :value="user.gender === 0 ? '男' : '女'"
+      title="邮箱"
+      :value="user.email"
       @click="isEditGender = true"
     ></van-cell>
     <van-cell
-      title="生日"
+      title="兴趣爱好"
       is-link
-      :value="user.birthday"
-      @click="isEditBirth = true"
+      :value="user.hobbyList"
+      @click="isEditHobby = true"
     ></van-cell>
     <van-cell
       v-if="user"
@@ -59,7 +58,7 @@
     <van-popup
       v-model="isEditName"
       position="bottom"
-      :style="{ height: '100%' }"
+      :style="{ height: '80%' }"
     >
       <update-name
         v-if="isEditName"
@@ -67,21 +66,17 @@
         @close="isEditName = false"
       ></update-name>
     </van-popup>
-    <!-- 修改性别 -->
-    <van-popup v-model="isEditGender" position="bottom"
-      ><update-gender
-        v-if="isEditGender"
-        v-model="user.gender"
-        @close="isEditGender = false"
-      />
-    </van-popup>
-    <!-- 修改生日 -->
-    <van-popup v-model="isEditBirth" position="bottom">
-      <update-birth
-        v-if="isEditBirth"
-        v-model="user.birthday"
-        @close="isEditBirth = false"
-      />
+    <!-- 修改兴趣爱好 -->
+    <van-popup
+      v-model="isEditHobby"
+      position="bottom"
+      :style="{ height: '80%' }"
+    >
+      <update-hobby
+        v-if="isEditHobby"
+        v-model="user.hobbyList"
+        @close="isEditName = false"
+      ></update-hobby>
     </van-popup>
   </div>
 </template>
@@ -89,29 +84,34 @@
 <script>
 import UpdatePhoto from "@/components/UpdatePhoto";
 import UpdateName from "@/components/UpdateName";
-import UpdateGender from "@/components/UpdateGender";
-import UpdateBirth from "@/components/UpdateBirth";
+import UpdateHobby from "@/components/UpdateHobby";
+import NavBar from "@/components/NavBar";
 import { getUserInfoApi } from "@/api/user";
 export default {
   name: "UserProfile",
   components: {
     UpdatePhoto,
     UpdateName,
-    UpdateGender,
-    UpdateBirth
+    UpdateHobby,
+    NavBar,
   },
   data() {
     return {
-      user: {},
+      user: {
+        name: "独孤求败",
+        email: "dgqb@trip.com",
+        hobbyList: ["篮球", "羽毛球", "滑板", "剧本杀"],
+      },
       previewImage: null,
       isEditPhoto: false,
       isEditName: false,
       isEditGender: false,
-      isEditBirth: false
+      isEditBirth: false,
+      isEditHobby: false,
     };
   },
   created() {
-    this.getUserInfo();
+    // this.getUserInfo();
   },
   methods: {
     onFileChange() {
@@ -129,25 +129,33 @@ export default {
       this.$dialog
         .confirm({
           title: "退出提示",
-          message: "确认退出吗？"
+          message: "确认退出吗？",
         })
         .then(() => {
           this.$store.commit("SET_USER", null);
           this.$router.push("/login");
         })
         .catch(() => {});
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
-.app-nav-bar{
+.app-nav-bar {
   height: 1.75rem;
   background-color: #2377e2;
-  /deep/.van-nav-bar__content{
+  /deep/.van-nav-bar__content {
     height: 1.75rem;
   }
+}
+.userPhoto {
+  height: 4rem;
+  width: 4rem;
+  display: inherit;
+  margin: 0 auto;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .van-popup {
   background-color: #f5f7f9;

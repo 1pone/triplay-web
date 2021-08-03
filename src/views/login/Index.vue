@@ -43,17 +43,21 @@
     <van-row>
       <van-col span="6"></van-col>
       <van-col span="6"
-        ><img
+        ><van-image
           class="icon_fastLogin"
-          src="@/assets/img/icon_tripPal.png"
+          src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_tripPal.png"
           alt="bg_tripPal"
+          fit="cover"
+          round
       />
       <p class="text_fastLogin">TripPal</p></van-col>
       <van-col span="6"
-        ><img
+        ><van-image
           class="icon_fastLogin"
-          src="@/assets/img/icon_ctrip.png"
+          src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png"
           alt="bg_ctrip"
+          fit="cover"
+          round
       />
       <p class="text_fastLogin">SSO</p></van-col>
       <van-col span="6"></van-col>

@@ -1,30 +1,6 @@
 <template>
   <div class="home-page">
-    
-    <!-- <div class="nav-bar">
-      程汇玩
-      <img
-        class="user-photo"
-        src="@/assets/img/icon_ctrip.png"
-        alt="userPhoto"
-        @click="toUserInfo"
-      />
-    </div> -->
-<van-nav-bar
-      class="app-nav-bar"
-      title="程汇玩"
-      left-arrow
-      @click-left="$router.back()"
-    ><template #right>
-   <van-image
-        class="user-photo"
-        src="@/assets/img/icon_ctrip.png"
-        alt="userPhoto"
-        @click="toUserInfo"
-      />
-  </template>
-  </van-nav-bar>
-
+    <nav-bar title="程汇玩" :imgSrc="img.imgSrc" :imgAlt="img.imgAlt"></nav-bar>
     <van-button
       class="btn-search"
       icon="search"
@@ -38,6 +14,7 @@
       v-model="isLoading"
       success-text="刷新成功"
       @refresh="onRefresh"
+      offest="100"
     >
       <van-list
         v-model="loading"
@@ -48,20 +25,7 @@
         <van-cell v-for="item in list" :key="item" :title="item" />
       </van-list>
     </van-pull-refresh>
-
-    <!-- <van-tabs v-model="active" class="channel-tabs">
-      <van-tab
-        v-for="channel in channelList"
-        :key="channel.id"
-        :title="channel.name"
-      >
-        <article-list :channel="channel" />
-      </van-tab>
-      <div class="wap-nav-placeholder" slot="nav-right"></div>
-      <div class="wap-nav-wrap" slot="nav-right" @click="editChannel = true">
-        <van-icon name="wap-nav" />
-      </div>
-    </van-tabs> -->
+    <div class="ph"></div>
     <van-popup
       v-model="editChannel"
       position="top"
@@ -85,6 +49,7 @@
 <script>
 import ChannelEdit from "@/components/ChannelEdit";
 import ArticleList from "@/components/ArticleList";
+import NavBar from "@/components/NavBar";
 import { getUserChannel } from "@/api/user";
 import { mapState } from "vuex";
 import { getItem } from "@/utils/storage";
@@ -93,6 +58,7 @@ export default {
   components: {
     ChannelEdit,
     ArticleList,
+    NavBar,
   },
   data() {
     return {
@@ -100,8 +66,13 @@ export default {
       channelList: [],
       editChannel: false,
       list: [],
-      loading: false,
+      isLoading: false,
       finished: false,
+      img: {
+        imgSrc:
+          "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
+        imgAlt: "userPhoto",
+      },
     };
   },
   created() {
@@ -143,7 +114,7 @@ export default {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       setTimeout(() => {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 15; i++) {
           this.list.push(this.list.length + 1);
         }
 
@@ -156,6 +127,11 @@ export default {
         }
       }, 1000);
     },
+     onRefresh() {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
+    },
   },
 };
 </script>
@@ -165,35 +141,27 @@ export default {
   /deep/ .van-nav-bar__title {
     max-width: none;
   }
-  // .app-nav-bar {
-  //   position: fixed;
-  //   width: 100%;
-  //   font-size: 0.5rem;
-  //   height: 1.75rem;
-  //   text-align: center;
-  //   line-height: 1.75rem;
-  //   color: #ffffff;
-  //   background-color: #2377e2;
-  //   z-index: 100;
-    
-  // }
-  .app-nav-bar{
-  height: 1.75rem;
-  background-color: #2377e2;
-  /deep/.van-nav-bar__content{
+  .app-nav-bar {
+    position: fixed;
+    width: 100%;
     height: 1.75rem;
-  }
-  .user-photo {
+    background-color: #2377e2;
+    z-index: 120;
+    /deep/.van-nav-bar__content {
+      height: 1.75rem;
+    }
+    .user-photo {
       width: 36px;
     }
-}
+  }
   .btn-search {
     position: relative;
     width: 6rem;
     height: 0.75rem;
-    margin: 1.85rem auto 0.1rem;
+    top: -0.05rem;
+    margin: 0 auto 0.1rem;
     left: calc(50% - 3rem);
-    color: #3d3d3d;
+    color: #969799;
     background-color: #ffffff;
     border: none;
 
@@ -249,6 +217,10 @@ export default {
       top: 0;
       bottom: 0;
     }
+  }
+  .ph {
+    width: 100%;
+    height: 1.5rem;
   }
 }
 </style>
