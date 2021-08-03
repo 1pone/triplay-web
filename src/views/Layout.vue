@@ -11,7 +11,7 @@
         </template>
       </van-tabbar-item>
       <van-tabbar-item>
-        <i class="iconfont">&#xe694;</i>
+        <i class="iconfont publish">&#xe694;</i>
       </van-tabbar-item>
       <van-tabbar-item icon="setting-o" badge="3" to="/my">
         <template #icon="props">
@@ -35,7 +35,15 @@ export default {
 
 <style lang="less" scoped>
   .iconfont{
-    font-size: 24px;
+    font-size: 0.75rem;
+  }
+  .publish{
+    position: relative;
+    font-size: 1.5rem;
+    top: -0.3rem;
+    z-index: 100;
+    color: #ff9914;
+
   }
 </style>>
 

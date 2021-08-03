@@ -139,13 +139,13 @@ export default {
   .bg {
     position: absolute;
     bottom: 0;
-    left: 5%;
-    width: 90%;
+    left: 20%;
+    width: 60%;
     z-index: -1;
   }
   .logo {
     position: relative;
-    margin-top: 25%;
+    margin-top: 15%;
     left: 15%;
     width: 70%;
   }
@@ -153,10 +153,11 @@ export default {
     margin: 0.75rem 0.875rem;
   }
   .login-btn-wrap {
-    padding: 26px 16px;
+    padding: 0.25rem 0.75rem 0;
     .login-btn {
       width: 80%;
       margin: 0 auto;
+      padding-bottom: 0;
       background-color: #1989fa;
       border: none;
       .van-button__text {

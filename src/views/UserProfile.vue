@@ -35,6 +35,12 @@
       :value="user.birthday"
       @click="isEditBirth = true"
     ></van-cell>
+    <van-cell
+      v-if="user"
+      class="logout-cell"
+      title="退出登录"
+      @click="logout"
+    />
     <!-- 修改头像 -->
     <van-popup
       v-model="isEditPhoto"
@@ -81,20 +87,20 @@
 </template>
 
 <script>
-import UpdatePhoto from '@/components/UpdatePhoto'
-import UpdateName from '@/components/UpdateName'
-import UpdateGender from '@/components/UpdateGender'
-import UpdateBirth from '@/components/UpdateBirth'
-import { getUserInfoApi } from '@/api/user'
+import UpdatePhoto from "@/components/UpdatePhoto";
+import UpdateName from "@/components/UpdateName";
+import UpdateGender from "@/components/UpdateGender";
+import UpdateBirth from "@/components/UpdateBirth";
+import { getUserInfoApi } from "@/api/user";
 export default {
-  name: 'UserProfile',
+  name: "UserProfile",
   components: {
     UpdatePhoto,
     UpdateName,
     UpdateGender,
     UpdateBirth
   },
-  data () {
+  data() {
     return {
       user: {},
       previewImage: null,
@@ -102,25 +108,37 @@ export default {
       isEditName: false,
       isEditGender: false,
       isEditBirth: false
-    }
+    };
   },
-  created () {
-    this.getUserInfo()
+  created() {
+    this.getUserInfo();
   },
   methods: {
-    onFileChange () {
-      const file = this.$refs.file.files[0]
-      this.previewImage = file
-      this.isEditPhoto = true
-      this.$refs.file.value = ''
+    onFileChange() {
+      const file = this.$refs.file.files[0];
+      this.previewImage = file;
+      this.isEditPhoto = true;
+      this.$refs.file.value = "";
     },
-    async getUserInfo () {
-      const { data } = await getUserInfoApi()
-      this.user = data.data
+    async getUserInfo() {
+      const { data } = await getUserInfoApi();
+      this.user = data.data;
       console.log(this.user);
+    },
+    logout() {
+      this.$dialog
+        .confirm({
+          title: "退出提示",
+          message: "确认退出吗？"
+        })
+        .then(() => {
+          this.$store.commit("SET_USER", null);
+          this.$router.push("/login");
+        })
+        .catch(() => {});
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -129,5 +147,9 @@ export default {
 }
 .update-photo-popup {
   background-color: #000;
+}
+.logout-cell {
+  text-align: center;
+  color: #d86262;
 }
 </style>

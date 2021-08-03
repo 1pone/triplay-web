@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import { getSearchResult } from '@/api/search'
+import { getSearchResult } from "@/api/search";
 export default {
-  name: 'SearchResult',
+  name: "SearchResult",
   components: {},
   props: {
     searchText: {
@@ -27,38 +27,38 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       list: [],
       loading: false,
       finished: false,
       page: 1,
       perPage: 20
-    }
+    };
   },
   computed: {},
   watch: {},
-  created () { },
-  mounted () { },
+  created() {},
+  mounted() {},
   methods: {
-    async onLoad () {
+    async onLoad() {
       const { data } = await getSearchResult({
         page: this.page,
         per_page: this.perPage,
         q: this.searchText
-      })
+      });
       console.log(data);
-      const { results } = data.data
-      this.list.push(...results)
-      this.loading = false
+      const { results } = data.data;
+      this.list.push(...results);
+      this.loading = false;
       if (results.length) {
-        this.page++
+        this.page++;
       } else {
-        this.finished = true
+        this.finished = true;
       }
     }
   }
-}
+};
 </script>
 
 <style scoped lang="less">

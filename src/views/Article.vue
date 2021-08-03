@@ -29,7 +29,7 @@
           size="small"
           :loading="isFollowLoading"
           @click="onFollow"
-          >{{ article.is_followed ? '已关注' : '关注' }}</van-button
+          >{{ article.is_followed ? "已关注" : "关注" }}</van-button
         >
       </van-cell>
       <div
@@ -85,22 +85,22 @@
 </template>
 
 <script>
-import '@/assets/css/github-markdown.css'
+import "@/assets/css/github-markdown.css";
 import {
   getArticleById,
   addCollect,
   deleteCollect,
   addLike,
   deleteLike
-} from '@/api/article'
-import { ImagePreview } from 'vant'
-import { addFollow, deleteFollow } from '@/api/user'
-import CommentList from '@/components/CommentList'
-import PostComment from '@/components/PostComment'
-import CommentReply from '@/components/CommentReply'
+} from "@/api/article";
+import { ImagePreview } from "vant";
+import { addFollow, deleteFollow } from "@/api/user";
+import CommentList from "@/components/CommentList";
+import PostComment from "@/components/PostComment";
+import CommentReply from "@/components/CommentReply";
 
 export default {
-  name: 'ArticleIndex',
+  name: "ArticleIndex",
   components: {
     CommentList,
     PostComment,
@@ -112,7 +112,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       article: {},
       isFollowLoading: false,
@@ -122,91 +122,93 @@ export default {
       totalCommentCount: 0,
       isReplyShow: false,
       replyComment: {}
-    }
+    };
   },
   computed: {},
   watch: {},
-  created () {
-    this.loadArticle()
+  created() {
+    this.loadArticle();
   },
-  mounted () { },
+  mounted() {},
   methods: {
-    async loadArticle () {
-      const { data } = await getArticleById(this.articleId)
-      this.article = data.data
+    async loadArticle() {
+      const { data } = await getArticleById(this.articleId);
+      this.article = data.data;
       this.$nextTick(() => {
-        this.handlePerviewImage()
-      })
+        this.handlePerviewImage();
+      });
     },
 
-    handlePerviewImage () {
-      const articleContent = this.$refs['article-content']
-      const imgs = articleContent.querySelectorAll('img')
-      const imgPaths = []
+    handlePerviewImage() {
+      const articleContent = this.$refs["article-content"];
+      const imgs = articleContent.querySelectorAll("img");
+      const imgPaths = [];
       imgs.forEach((img, index) => {
-        imgPaths.push(img.src)
-        img.onclick = function () {
+        imgPaths.push(img.src);
+        img.onclick = function() {
           ImagePreview({
             images: imgPaths,
             startPosition: index
-          })
-        }
-      })
+          });
+        };
+      });
     },
 
-    async onFollow () {
-      this.isFollowLoading = true
+    async onFollow() {
+      this.isFollowLoading = true;
       if (this.article.is_followed) {
-        await deleteFollow(this.article.aut_id)
+        await deleteFollow(this.article.aut_id);
       } else {
-        await addFollow(this.article.aut_id)
+        await addFollow(this.article.aut_id);
       }
-      this.article.is_followed = !this.article.is_followed
-      this.isFollowLoading = false
+      this.article.is_followed = !this.article.is_followed;
+      this.isFollowLoading = false;
     },
 
-    async onCollect () {
+    async onCollect() {
       this.$toast.loading({
-        message: '操作中...',
+        message: "操作中...",
         forbidClick: true
-      })
+      });
       if (this.article.is_collected) {
-        await deleteCollect(this.articleId)
+        await deleteCollect(this.articleId);
       } else {
-        await addCollect(this.articleId)
+        await addCollect(this.articleId);
       }
-      this.article.is_collected = !this.article.is_collected
-      this.$toast.success(`${this.article.is_collected ? '' : '取消'}收藏成功`)
+      this.article.is_collected = !this.article.is_collected;
+      this.$toast.success(`${this.article.is_collected ? "" : "取消"}收藏成功`);
     },
 
-    async onLike () {
+    async onLike() {
       this.$toast.loading({
-        message: '操作中...',
+        message: "操作中...",
         forbidClick: true
-      })
+      });
       if (this.article.attitude === 1) {
-        await deleteLike(this.articleId)
-        this.article.attitude = -1
+        await deleteLike(this.articleId);
+        this.article.attitude = -1;
       } else {
-        await addLike(this.articleId)
-        this.article.attitude = 1
+        await addLike(this.articleId);
+        this.article.attitude = 1;
       }
-      this.$toast.success(`${this.article.attitude === 1 ? '' : '取消'}点赞成功`)
+      this.$toast.success(
+        `${this.article.attitude === 1 ? "" : "取消"}点赞成功`
+      );
     },
 
-    onPostSuccess (comment) {
-      this.commentList.unshift(comment)
-      this.totalCommentCount++
-      this.isPostShow = false
+    onPostSuccess(comment) {
+      this.commentList.unshift(comment);
+      this.totalCommentCount++;
+      this.isPostShow = false;
     },
 
-    onReplyClick (comment) {
-      console.log('onReplyClick', comment)
-      this.replyComment = comment
-      this.isReplyShow = true
+    onReplyClick(comment) {
+      console.log("onReplyClick", comment);
+      this.replyComment = comment;
+      this.isReplyShow = true;
     }
   }
-}
+};
 </script>
 
 <style scoped lang="less">

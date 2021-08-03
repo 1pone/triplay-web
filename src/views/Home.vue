@@ -1,19 +1,22 @@
 <template>
   <div class="home-page">
-    <van-nav-bar class="app-nav-bar">
-      <van-button
-        slot="title"
-        class="search-btn"
-        icon="search"
-        type="info"
-        round
-        size="small"
-        to="/search"
-        >搜索</van-button
-      >
-    </van-nav-bar>
-
-    <van-tabs v-model="active" class="channel-tabs">
+    <div class="nav-bar">程汇玩</div>
+    <img
+      class="user-photo"
+      src="@/assets/img/icon_ctrip.png"
+      alt="userPhoto"
+      @click="toUserInfo"
+    />
+    <van-button
+      class="search-btn"
+      icon="search"
+      type="info"
+      round
+      size="small"
+      to="/search"
+      >搜索</van-button
+    >
+    <!-- <van-tabs v-model="active" class="channel-tabs">
       <van-tab
         v-for="channel in channelList"
         :key="channel.id"
@@ -25,10 +28,10 @@
       <div class="wap-nav-wrap" slot="nav-right" @click="editChannel = true">
         <van-icon name="wap-nav" />
       </div>
-    </van-tabs>
+    </van-tabs> -->
     <van-popup
       v-model="editChannel"
-      position="bottom"
+      position="top"
       class="channel-edit-popup"
       closeable
       close-icon-position="top-left"
@@ -47,58 +50,61 @@
 </template>
 
 <script>
-import ChannelEdit from '@/components/ChannelEdit'
-import ArticleList from '@/components/ArticleList'
-import { getUserChannel } from '@/api/user'
-import { mapState } from 'vuex'
-import { getItem } from '@/utils/storage'
+import ChannelEdit from "@/components/ChannelEdit";
+import ArticleList from "@/components/ArticleList";
+import { getUserChannel } from "@/api/user";
+import { mapState } from "vuex";
+import { getItem } from "@/utils/storage";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     ChannelEdit,
     ArticleList
   },
-  data () {
+  data() {
     return {
       active: 0,
       channelList: [],
       editChannel: false
-    }
+    };
   },
-  created () {
-    this.getChannels()
+  created() {
+    this.getChannels();
   },
   computed: {
-    ...mapState(['user'])
+    ...mapState(["user"])
   },
   watch: {
-    user () {
-      this.active = 0
+    user() {
+      this.active = 0;
     },
-    channelList (newval) {
-      console.log('userchannel', newval);
+    channelList(newval) {
+      console.log("userchannel", newval);
     }
   },
   methods: {
-    async getChannels () {
-      let channels = []
+    toUserInfo() {
+      this.$router.push("/profile");
+    },
+    async getChannels() {
+      let channels = [];
       if (this.user) {
-        const { data } = await getUserChannel()
-        console.log('login channel', data);
-        channels = data.data.channels
+        const { data } = await getUserChannel();
+        console.log("login channel", data);
+        channels = data.data.channels;
       } else {
-        const localChannels = getItem('userChannel')
+        const localChannels = getItem("userChannel");
         if (localChannels) {
-          channels = localChannels
+          channels = localChannels;
         } else {
-          const { data } = await getUserChannel()
-          channels = data.data.channels
+          const { data } = await getUserChannel();
+          channels = data.data.channels;
         }
       }
-      this.channelList = channels
+      this.channelList = channels;
     }
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
@@ -106,10 +112,30 @@ export default {
   /deep/ .van-nav-bar__title {
     max-width: none;
   }
+  .user-photo {
+    position: relative;
+    right: 0.5rem;
+    top: calc(-0.875rem - 18px);
+    width: 36px;
+    z-index: 100;
+    float: right;
+  }
+  .nav-bar {
+    font-size: 0.5rem;
+    height: 1.75rem;
+    text-align: center;
+    line-height: 1.75rem;
+    color: #ffffff;
+    background-color: #2377e2;
+  }
   .search-btn {
-    width: 277px;
-    height: 32px;
-    background-color: #5babfb;
+    position: relative;
+    width: 6rem;
+    height: 28px;
+    // top: -4px;
+    left: calc(50% - 3rem);
+    color: #3d3d3d;
+    background-color: #ffffff;
     border: none;
     .van-icon {
       font-size: 16px;
@@ -150,9 +176,9 @@ export default {
       font-size: 24px;
     }
     &:before {
-      content: '';
+      content: "";
       width: 1px;
-      background: url('../assets/img/line.png') no-repeat;
+      background: url("../assets/img/line.png") no-repeat;
       background-size: contain;
       position: absolute;
       left: 0;

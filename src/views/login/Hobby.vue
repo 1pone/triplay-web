@@ -53,8 +53,8 @@ export default {
   .bg {
     position: absolute;
     bottom: 0;
-    left: 5%;
-    width: 90%;
+    left: 20%;
+    width: 60%;
     z-index: -1;
   }
   .hobby-form {
