@@ -93,19 +93,14 @@ export default {
     UpdatePhoto,
     UpdateName,
     UpdateHobby,
-    NavBar
+    NavBar,
   },
   data() {
     return {
       user: {
         name: "独孤求败",
         email: "dgqb@trip.com",
-        hobbyList: [
-        "篮球",
-        "羽毛球",
-        "滑板",
-        "剧本杀",
-      ],
+        hobbyList: ["篮球", "羽毛球", "滑板", "剧本杀"],
       },
       previewImage: null,
       isEditPhoto: false,

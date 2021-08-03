@@ -244,6 +244,22 @@ export default {
       color: #fff;
     }
   }
+  // 标签页融合nav-bar
+  // /deep/ .van-tabs__nav{
+  //   background-color: #2377e2;
+  // }
+  // /deep/ .van-tab__text{
+  //   color: #ffffff;
+  // }
+
+  /deep/ .van-tabs__wrap{
+    height: 1.05rem;
+  }
+  /deep/ .van-tabs__line {
+    // background-color: #ff9914;
+    background-color: #2377e2;
+  }
+  
   /deep/ .nav-grid {
     .nav-grid-item {
       height: 70px;

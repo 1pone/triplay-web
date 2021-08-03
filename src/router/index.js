@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import Login from '@/views/login/Login.vue'
+import Login from '@/views/login/Index'
 import { Dialog } from 'vant'
 Vue.use(VueRouter)
 
@@ -35,33 +35,18 @@ const routes = [
                 path: '/my',
                 name: 'my',
                 component: () =>
-                    import ('@/views/my/My'),
+                    import ('@/views/my/Index'),
                 meta: { isUser: false }
             }
         ]
     },
     {
-        path: '/profile',
+        path: '/userProfile',
         name: 'user-profile',
         component: () =>
             import ('@/views/UserProfile'),
         meta: { isUser: true }
     },
-    {
-        path: '/search',
-        name: 'search',
-        component: () =>
-            import ('@/views/Search'),
-        meta: { isUser: false }
-    },
-    {
-        path: '/article/:articleId',
-        name: 'article',
-        component: () =>
-            import ('@/views/Article'),
-        props: true,
-        meta: { isUser: false }
-    }
 ]
 
 const router = new VueRouter({
