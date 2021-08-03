@@ -55,7 +55,7 @@
           src="@/assets/img/icon_ctrip.png"
           alt="bg_ctrip"
       />
-      <p class="text_fastLogin">SSO</p></van-col></van-col>
+      <p class="text_fastLogin">SSO</p></van-col>
       <van-col span="6"></van-col>
     </van-row>
   </div>
@@ -69,8 +69,8 @@ export default {
   data() {
     return {
       user: {
-        mobile: "17090086870",
-        code: "246810",
+        email: "asdf@qq.com",
+        pwd: "123456",
       },
       loginRules,
       isCountDown: false,
@@ -78,6 +78,7 @@ export default {
     };
   },
   methods: {
+    
     // 登录
     async login() {
       this.$toast.loading({
@@ -85,19 +86,22 @@ export default {
         forbidClick: true,
         duration: 0,
       });
-      try {
-        const { data } = await loginApi(this.user);
-        if (data.data.token) {
+      const { data } = await loginApi(this.user);
+      console.log(data);
+      switch(data.code){
+        case 0: {
           this.$toast.success("登陆成功");
-          this.$store.commit("SET_USER", data.data.token);
-          this.$store.commit("SET_REFRESH", data.data.refresh_token);
-          // this.$router.push(this.$route.query.redirect || '/')
+          sessionStorage.setItem('user', JSON.stringify(data.data));
+          console.log(sessionStorage.getItem('user'))
           this.$router.push("/");
-        }
-      } catch (error) {
-        this.$toast.fail("登录失败，手机号或验证码错误");
-      }
+          console.log('push done')
+        } break;
+        case 1001: 
+        this.$toast.fail("登录失败，邮箱或密码错误"); break;
+      } 
+
     },
+
     onFailed(error) {
       if (error.errors[0]) {
         this.$toast({
@@ -106,31 +110,11 @@ export default {
         });
       }
     },
-    // 发送验证码
-    async sendCode() {
-      try {
-        await this.$refs["loginForm"].validate("mobile");
-        this.isSendLoad = true;
-        await sendCodeApi(this.user.mobile);
-        this.isCountDown = true;
-      } catch (err) {
-        let message = "";
-        console.log(err);
-        if (err && err.response && err.response.status === 429) {
-          message = "发送太频繁了，请稍后重试";
-        } else if (err.name === "mobile") {
-          message = err.message;
-        } else {
-          message = "发送失败，请稍后重试";
-        }
-        this.$toast({
-          message,
-          position: "top",
-        });
-      }
-      this.isSendLoad = false;
-    },
+
   },
+  created: function(){
+    this.login();
+  }
 };
 </script>
 
