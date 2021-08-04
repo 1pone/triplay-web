@@ -136,8 +136,8 @@ export default {
         page:1,
         limit:10,
         full:true,
-        activityStatusList:[],
-        userActivityStatusList:[]
+        statusList:[],
+        sessionType: 1
       },
       finished: false
     };
@@ -155,6 +155,14 @@ export default {
       const res = getUserActivity(this.reqParam);
       return res.data;
     },
+
+    // 获取用户状态
+    getUserState(){
+      let user = JSON.parse(sessionStorage.getItem("user"));
+      return user;
+    },
+
+
 
 
     async getUserDetail() {
