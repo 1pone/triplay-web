@@ -29,43 +29,36 @@
         @load="onLoad"
       >
         <van-cell-group class="activity-group" inset>
-          <van-cell
+          <van-cell v-for="(a, i) of activityList" :key="i"
             ><van-row
               ><van-col span="8"
                 ><van-image
                   class="img-activity"
                   fit="cover"
-                  src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg"
-                  alt="pingpong"
+                  :src="a.img.imgSrc"
+                  :alt="a.img.imgAlt"
                 ></van-image></van-col
               ><van-col span="16">
                 <div class="info-wrapper">
                   <div class="info-text">
-                    <p class="info-text-title">【乒乓球】双打交友赛</p>
-                    <p class="info-text-intro">
-                      水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！
+                    <p class="info-text-title">
+                      【{{ a.info.type }}】{{ a.info.title }}
                     </p>
-                    <p>时间：2021-8-5 19：00-20：00</p>
-                    <p>地点：</p>
+                    <p class="info-text-intro">
+                      {{ a.info.intro }}
+                    </p>
+                    <p>
+                      时间：{{ a.info.date }} {{ a.info.startTime }}-{{
+                        a.info.endTime
+                      }}
+                    </p>
+                    <p>地点：{{ a.info.place }}</p>
                   </div>
                   <div class="info-rate">
-                    <van-progress pivot-text="1 / 2" :percentage="50" />
+                    <van-progress :pivot-text="a.info.nowNum +'/'+ a.info.targetNum" :percentage="(a.info.nowNum / a.info.targetNum)*100" />
                   </div>
                 </div> </van-col></van-row
           ></van-cell>
-
-          <van-cell
-            ><van-row
-              ><van-col span="8"
-                ><van-image
-                  class="img-activity"
-                  fit="cover"
-                  src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp"
-                  alt="pingpong"
-                ></van-image></van-col
-              ><van-col span="16">活动信息</van-col></van-row
-            ></van-cell
-          >
         </van-cell-group>
       </van-list>
     </van-pull-refresh>
@@ -179,21 +172,116 @@ export default {
       activityList: [
         {
           img: {
-            imgSrc: "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
-            imgAlt: "pingpong"
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
           },
           info: {
             type: "乒乓球",
             title: "双打交友赛",
-            intro: "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
             date: "2021-8-5",
             startTime: "19：00",
             endTime: "20：00",
             place: "15#7F10一号乒乓球桌",
-            targetNum: 2,
-            nowNum: 1
-          }
-        }
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 11,
+            nowNum: 3,
+          },
+        },{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 3,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 8,
+            nowNum: 2,
+          },
+        },{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 24,
+            nowNum: 16,
+          },
+        },
       ],
       search: {
         keyword: "",
@@ -202,7 +290,7 @@ export default {
         time: "",
         num: 2,
       },
-      list: [], // 
+      list: [], //
       loading: false,
       isLoading: false,
       finished: false,
@@ -222,9 +310,6 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
-    rate(){
-      return this.activityList.info.nowNum +" / " + this.activityList.info.targetNum
-    }
   },
   watch: {
     user() {
