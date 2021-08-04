@@ -114,7 +114,7 @@
       />
     </van-popup>
 
-    <van-calendar v-model="showDatePicker" @confirm="onDateConfirm" />
+    <van-calendar v-model="showDatePicker" @confirm="onDateConfirm" type="range" />
     <van-popup v-model="showTimePicker" position="bottom">
       <van-datetime-picker
         type="time"
@@ -180,9 +180,12 @@ export default {
       this.activity.tpye = type;
       this.showTypePicker = false;
     },
+    formatDate(date) {
+      return `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
+    },
     onDateConfirm(date) {
-      this.activity.date = `${date.getYear() + 1900}/${date.getMonth() +
-        1}/${date.getDate()}`;
+      const [start, end] = date;
+      this.activity.date = `${this.formatDate(start)}-${this.formatDate(end)}`;
       this.showDatePicker = false;
     },
     onTimeConfirm(time) {

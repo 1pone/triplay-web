@@ -29,17 +29,41 @@
         @load="onLoad"
       >
         <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
-        <van-cell-group inset>
+        <van-cell-group class="activity-group" inset>
           <van-cell
             ><van-row
-              ><van-col span="8"><van-image class="img-activity" src="https://baike.baidu.com/pic/%E4%B9%92%E4%B9%93%E7%90%83/221415/1/f9dcd100baa1cd11728b23abf158dffcc3cec2fd87ac?fr=lemma&ct=single" alt="pingpong"></van-image></van-col
-              ><van-col span="16">活动信息</van-col></van-row
-            ></van-cell
-          >
+              ><van-col span="8"
+                ><van-image
+                  class="img-activity"
+                  fit="cover"
+                  src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg"
+                  alt="pingpong"
+                ></van-image></van-col
+              ><van-col span="16">
+                <div class="info-wrapper">
+                  <div class="info-text">
+                    <p class="info-text-title">【乒乓球】双打交友赛</p>
+                    <p class="info-text-intro">
+                      水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！
+                    </p>
+                    <p>时间：2021-8-5 19：00-20：00</p>
+                    <p>地点：15#7F10一号乒乓球桌</p>
+                  </div>
+                  <div class="info-rate">
+                    <van-progress pivot-text="1 / 2" :percentage="50" />
+                  </div>
+                </div> </van-col></van-row
+          ></van-cell>
 
           <van-cell
             ><van-row
-              ><van-col span="8">活动图片</van-col
+              ><van-col span="8"
+                ><van-image
+                  class="img-activity"
+                  fit="cover"
+                  src="https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp"
+                  alt="pingpong"
+                ></van-image></van-col
               ><van-col span="16">活动信息</van-col></van-row
             ></van-cell
           >
@@ -117,7 +141,7 @@
     <van-popup v-model="showTypePicker" position="bottom">
       <van-picker
         show-toolbar
-        :columns="activityList"
+        :columns="activityType"
         @confirm="onTypeConfirm"
         @cancel="showTypePicker = false"
       />
@@ -138,9 +162,9 @@
 import ChannelEdit from "@/components/ChannelEdit";
 import ArticleList from "@/components/ArticleList";
 import NavBar from "@/components/NavBar";
-import { getUserChannel } from "@/api/user";
+// import { getUserChannel } from "@/api/user";
 import { mapState } from "vuex";
-import { getItem } from "@/utils/storage";
+// import { getItem } from "@/utils/storage";
 export default {
   name: "Home",
   components: {
@@ -151,7 +175,7 @@ export default {
   data() {
     return {
       active: 0,
-      channelList: [],
+      // channelList: [],
       showSearchBoard: false,
       list: [],
       search: {
@@ -168,7 +192,7 @@ export default {
       showTypePicker: false,
       showDatePicker: false,
       showTimePicker: false,
-      activityList: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
+      activityType: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
       img: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
@@ -186,31 +210,31 @@ export default {
     user() {
       this.active = 0;
     },
-    channelList(newval) {
-      console.log("userchannel", newval);
-    },
+    // channelList(newval) {
+    //   console.log("userchannel", newval);
+    // },
   },
   methods: {
     toUserInfo() {
       this.$router.push("/profile");
     },
-    async getChannels() {
-      let channels = [];
-      if (this.user) {
-        const { data } = await getUserChannel();
-        console.log("login channel", data);
-        channels = data.data.channels;
-      } else {
-        const localChannels = getItem("userChannel");
-        if (localChannels) {
-          channels = localChannels;
-        } else {
-          const { data } = await getUserChannel();
-          channels = data.data.channels;
-        }
-      }
-      this.channelList = channels;
-    },
+    // async getChannels() {
+    //   let channels = [];
+    //   if (this.user) {
+    //     const { data } = await getUserChannel();
+    //     console.log("login channel", data);
+    //     channels = data.data.channels;
+    //   } else {
+    //     const localChannels = getItem("userChannel");
+    //     if (localChannels) {
+    //       channels = localChannels;
+    //     } else {
+    //       const { data } = await getUserChannel();
+    //       channels = data.data.channels;
+    //     }
+    //   }
+    //   this.channelList = channels;
+    // },
     onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
@@ -349,6 +373,40 @@ export default {
   .btn-search-confirm {
     width: 80%;
     margin: 0 auto;
+  }
+  .activity-group {
+    .img-activity {
+      margin: 5px 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      /deep/ .van-image__img {
+        border-radius: 10px;
+      }
+    }
+    /deep/.van-cell__value {
+      height: 2.7rem;
+    }
+    .info-wrapper {
+      padding: 5px;
+      .info-text,
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        .info-text-title {
+          font-size: 16px;
+          line-height: 22px;
+          margin-left: -0.2rem;
+          font-weight: 500;
+        }
+      }
+      .info-rate {
+        margin-top: 0.25rem;
+      }
+    }
   }
 }
 </style>
