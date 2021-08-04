@@ -12,8 +12,8 @@
         <van-field
           readonly
           clickable
-          :value="activity.tpye"
-          name="tpye"
+          :value="activity.type"
+          name="type"
           label="类型"
           placeholder="请选择活动类型"
           @click="showTypePicker = true"
@@ -24,6 +24,13 @@
           name="title"
           label="标题"
           placeholder="请输入活动标题"
+          :rules="[{ required: true }]"
+        />
+        <van-field
+          v-model="activity.location"
+          name="location"
+          label="地点"
+          placeholder="请输入活动地点"
           :rules="[{ required: true }]"
         />
         <van-field
@@ -72,7 +79,6 @@
           placeholder="请输入活动地点"
           :rules="[{ required: true }]"
         />
-        <van-field
         <van-field name="num" label="人数" :rules="[{ required: true }]">
           <template #input>
             <van-stepper v-model="activity.num" />
@@ -152,6 +158,7 @@
 <script>
 import NavBar from "@/components/NavBar";
 import { mapState } from "vuex";
+import { submitActivity } from "@/api/activity"
 export default {
   name: "Publish",
   components: {
@@ -163,8 +170,9 @@ export default {
       username: "",
       password: "",
       activity: {
-        tpye: "",
+        type: "",
         title: "",
+        location: "",
         intro: "",
         date: "",
         startTime: "",
@@ -204,11 +212,11 @@ export default {
         .catch(() => {});
     },
     onTypeConfirm(type) {
-      this.activity.tpye = type;
+      this.activity.type = type;
       this.showTypePicker = false;
     },
     onDateConfirm(date) {
-      this.activity.date = `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
+      this.activity.date = `${date.getYear() + 1900}-${date.getMonth() + 1}-${date.getDate()}`;
       this.showDatePicker = false;
     },
     onStartTimeConfirm(time) {
@@ -219,10 +227,29 @@ export default {
       this.activity.endTime = time;
       this.showEndTimePicker = false;
     },
+    // 提交时逻辑
     onSubmit(values) {
       console.log("submit", values);
+      let req = {
+        tpye: this.activity.type,
+        name: this.activity.title,
+        location: this.activity.location,
+        summary: this.activity.intro,
+        startTime: this.activity.date + ' ' + this.activity.startTime + ':00',
+        endTime: this.activity.date + ' ' + this.activity.endTime + ':00',
+        participantNumber: this.activity.num,
+        expireTime: new Date(this.activity.time - 2*60*60*1000),
+        emailList: this.activity.invited
+      }
+      console.log(req);
+      const res = this.submit(req);
+      console.log(res);
+
       this.$toast.success("发布成功");
       this.$router.push("/");
+    },
+    async submit(req){
+      return await submitActivity(req);
     },
     onAddEmail() {
       if (/^([a-zA-Z]|[0-9])(\w|\-)+@trip.com/.test(this.invitedEmail)) {

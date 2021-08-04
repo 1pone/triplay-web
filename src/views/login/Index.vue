@@ -104,7 +104,7 @@ export default {
             const labelRes = await getUserLabel(data.data.userId);
             console.log(labelRes);
             // 若已经选择标签，则跳转首页
-            if (!labelRes.data.userLabel) {
+            if (labelRes.data.userLabel) {
               this.$router.push("/");
             } else {  // 否则跳转标签选择页 hobby
               this.$router.push("/hobby");

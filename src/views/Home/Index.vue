@@ -153,6 +153,7 @@
 <script>
 import NavBar from "@/components/NavBar";
 import { mapState } from "vuex";
+import{ getUserActivity } from "@/api/activity";
 export default {
   name: "Home",
   components: {
@@ -160,6 +161,15 @@ export default {
   },
   data() {
     return {
+      reqParam:{
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+      },
+      typeMap: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
+
       active: 0,
       showSearchBoard: false,
       activityList: [
@@ -309,11 +319,46 @@ export default {
     },
   },
   methods: {
+
+    /**
+     * yhy 添加获取数据方法
+     */
+    // 获取用户的发布的活动
+    async getActivity(){
+
+      return res.data.data;
+    },
+
     toUserInfo() {
       this.$router.push("/profile");
     },
     // },
-    onLoad() {
+    async onLoad() {
+      const res = await getUserActivity(this.reqParam);
+      if(this.reqParam.page < res.data.data.pages)
+        this.reqParam.page++;
+      let records = res.data.data.records;
+      console.log('records', records)
+
+      records.forEach(item => {
+        console.log(item)
+        let activaty = {
+          img:{},
+          info:{
+            type: this.typeMap[item.type],
+            title: item.name,
+            intro: item.summary,
+            startTime: item.startTime,
+            endTime: item.endTime,
+            place: item.location,
+            targetNum: item.participantNumber,
+            nowNum: item.currentNumber
+          }
+        }
+        this.activityList.push(activaty);
+        console.log(this.activityList)
+      });
+
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
       setTimeout(() => {

@@ -2,7 +2,7 @@
   <div class="my-page">
     <!-- 已登录 -->
     <nav-bar
-      v-if="user"
+      v-if="isLogin"
       title="我的"
       :imgSrc="userImg.imgSrc"
       :imgAlt="userImg.imgAlt"
@@ -38,7 +38,7 @@
         text="历史"
       />
     </van-grid> -->
-    <div v-if="user">
+    <div v-if="isLogin">
       <van-tabs v-model="active" swipeable animated>
         <van-tab title="发布">
           <van-pull-refresh
@@ -53,7 +53,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in publishActivityList" :key="item" :title="item" />
             </van-list>
           </van-pull-refresh>
         </van-tab>
@@ -70,7 +70,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in baotuanActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
         <van-tab title="受邀"
@@ -86,7 +86,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in invitedActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
         <van-tab title="历史"
@@ -102,7 +102,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in historyActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
       </van-tabs>
@@ -114,11 +114,14 @@
 <script>
 import NavBar from "@/components/NavBar";
 import { getUserApi } from "@/api/user";
+import { getUserActivity } from "@/api/activity";
 import { mapState } from "vuex";
 export default {
   name: "My",
   data() {
     return {
+      typeMap: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
+      isLogin: true,
       active: 0,
       currentUser: {},
       userImg: {
@@ -126,20 +129,142 @@ export default {
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
         imgAlt: "userPhoto"
       },
-      list: [],
+      publishActivityList: [],
+      baotuanActivityList: [],
+      invitedActivityList: [],
+      historyActivityList: [],
       loading: false,
       isLoading: false,
+      finished: false,
+
+      publishReqParam:{
+        userId:"",
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+        sessionType: 1
+      },
+      baotuanReqParam:{
+        userId:"",
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+        sessionType: 2
+      },
+      invitedReqParam:{
+        userId:"",
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+        sessionType: 3
+      },
+      historyReqParam:{
+        userId:"",
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+        sessionType: 4
+      },
+      
       finished: false
     };
   },
   components: {
     NavBar
   },
+
+  created() {
+    this.getUserActivity(this.publishReqParam);
+  },
   methods: {
+
+    /**
+     * yhy 添加获取数据方法
+     */
+    // 获取用户的发布的活动
+    async getUserActivity(reqParam){
+      console.log(reqParam)
+      reqParam={
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+      }
+      const res = await getUserActivity(reqParam);
+      console.log(res)
+      if(res.data.code != "0"){
+        this.isLogin = false;
+        return;
+      }
+      if(reqParam.page && reqParam.page < res.data.data.pages)
+        reqParam.page++;
+
+      let records = res.data.data.records;
+      console.log('records', records)
+
+      records.forEach(item => {
+        console.log(item)
+        let activaty = {
+          img:{},
+          info:{
+            type: this.typeMap[item.type],
+            title: item.name,
+            intro: item.summary,
+            startTime: item.startTime,
+            endTime: item.endTime,
+            place: item.location,
+            targetNum: item.participantNumber,
+            nowNum: item.currentNumber
+          }
+        }
+        switch(reqParam.sessionType){
+          case 1: this.publishActivityList.push(activaty); break;
+          case 2: this.baotuanActivityList.push(activaty); break;
+          case 3: this.invitedActivityList.push(activaty); break;
+          case 4: this.historyActivityList.push(activaty); break;
+        }
+      });
+    },
+
+    // 获取用户正在抱团中的活动
+    async getUserBaotuanActivity(){
+      const res = getUserActivity(this.baotuanReqParam);
+      if(this.baotuanReqParam.page < res.data.page.totalPage)
+        this.baotuanReqParam.page++;
+      console.log(res.data)
+      return res.data;
+    },
+    // 获取用户的受邀活动
+    async getUserInvitedActivity(){
+      const res = getUserActivity(this.invitedReqParam);
+      if(this.invitedReqParam.page < res.data.page.totalPage)
+        this.invitedReqParam.page++;
+      console.log(res.data)
+      return res.data;
+    },
+    // 获取用户的历史活动
+    async getUserHistoryActivity(){
+      const res = getUserActivity(this.historyReqParam);
+      if(this.historyReqParam.page < res.data.page.totalPage)
+        this.historyReqParam.page++;
+      console.log(res.data)
+      return res.data;
+    },
+
     async getUserDetail() {
       const { data } = await getUserApi();
       this.currentUser = data.data;
     },
+
     onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
@@ -157,12 +282,14 @@ export default {
         }
       }, 1000);
     },
+    
     onRefresh() {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
-    }
-  },
+    },
+  }, // method
+
   computed: {
     ...mapState(["user"])
   },

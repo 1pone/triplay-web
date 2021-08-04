@@ -8,6 +8,10 @@ export const getUserApi = () => {
   return api('get', '/user/getUserInfo')
 }
 
+export const getUserById = userId => {
+  return api('get', '/user/getUserInfo')
+}
+
 export const getUserChannel = () => {
   return api('get', '/app/v1_0/user/channels')
 }
