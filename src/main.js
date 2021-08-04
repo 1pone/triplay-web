@@ -34,9 +34,10 @@ import {
   Tabs,
   Icon,
   PullRefresh,
+  Progress,
   List,
   Search,
-  Stepper 
+  Stepper
 } from 'vant'
 
 const plugins = [
@@ -66,6 +67,7 @@ const plugins = [
   Tabs,
   Icon,
   PullRefresh,
+  Progress,
   List,
   Search,
   Stepper
