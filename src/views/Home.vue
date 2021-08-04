@@ -28,7 +28,6 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
         <van-cell-group class="activity-group" inset>
           <van-cell
             ><van-row
@@ -47,7 +46,7 @@
                       水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！
                     </p>
                     <p>时间：2021-8-5 19：00-20：00</p>
-                    <p>地点：15#7F10一号乒乓球桌</p>
+                    <p>地点：</p>
                   </div>
                   <div class="info-rate">
                     <van-progress pivot-text="1 / 2" :percentage="50" />
@@ -177,7 +176,25 @@ export default {
       active: 0,
       // channelList: [],
       showSearchBoard: false,
-      list: [],
+      activityList: [
+        {
+          img: {
+            imgSrc: "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong"
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro: "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 2,
+            nowNum: 1
+          }
+        }
+      ],
       search: {
         keyword: "",
         type: "",
@@ -185,7 +202,7 @@ export default {
         time: "",
         num: 2,
       },
-      activity: {},
+      list: [], // 
       loading: false,
       isLoading: false,
       finished: false,
@@ -205,6 +222,9 @@ export default {
   },
   computed: {
     ...mapState(["user"]),
+    rate(){
+      return this.activityList.info.nowNum +" / " + this.activityList.info.targetNum
+    }
   },
   watch: {
     user() {

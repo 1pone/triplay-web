@@ -28,11 +28,10 @@
         />
         <van-field
           v-model="activity.intro"
-          type="textarea"
           name="intro"
           label="介绍"
           placeholder="请输入活动介绍"
-          rows="2"
+          autosize 
           maxlength="50"
           show-word-limit
         />
@@ -66,6 +65,14 @@
           @click="showEndTimePicker = true"
           :rules="[{ required: true }]"
         />
+        <van-field
+          v-model="activity.place"
+          name="place"
+          label="地点"
+          placeholder="请输入活动地点"
+          :rules="[{ required: true }]"
+        />
+        <van-field
         <van-field name="num" label="人数" :rules="[{ required: true }]">
           <template #input>
             <van-stepper v-model="activity.num" />
@@ -162,6 +169,7 @@ export default {
         date: "",
         startTime: "",
         endTime: "",
+        place: "",
         num: 2,
         invited: []
       },
@@ -258,7 +266,7 @@ export default {
 
   .btn-submit {
     width: 80%;
-    margin: 1rem auto;
+    margin: 0.5rem auto;
   }
   .user-photo {
     position: relative;
