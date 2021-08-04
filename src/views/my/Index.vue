@@ -113,7 +113,7 @@
 
 <script>
 import NavBar from "@/components/NavBar";
-import { getUserById } from "@/api/user";
+import { getUserApi } from "@/api/user";
 import { getUserActivity } from "@/api/activity";
 import { mapState } from "vuex";
 export default {
@@ -156,17 +156,8 @@ export default {
       return res.data;
     },
 
-    // 获取用户状态
-    getUserState(){
-      let user = JSON.parse(sessionStorage.getItem("user"));
-      return user;
-    },
-
-
-
-
     async getUserDetail() {
-      const { data } = await getUserById();
+      const { data } = await getUserApi();
       this.currentUser = data.data;
     },
 
