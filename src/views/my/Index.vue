@@ -110,7 +110,8 @@
 
 <script>
 import NavBar from "@/components/NavBar";
-import { getUserApi } from "@/api/user";
+import { getUserById } from "@/api/user";
+import { getUserActivity } from "@/api/activity";
 import { mapState } from "vuex";
 export default {
   name: "My",
@@ -126,16 +127,36 @@ export default {
       loading: false,
       isLoading: false,
       finished: false,
+
+      reqParam:{
+        page:1,
+        limit:10,
+        full:true,
+        activityStatusList:[],
+        userActivityStatusList:[]
+      },
     };
   },
   components: {
     NavBar,
   },
   methods: {
+
+    /**
+     * yhy 添加获取数据方法
+     */
+    // 获取用户的所有活动
+    async getUserActivity(){
+      const res = getUserActivity(this.reqParam);
+      return res.data;
+    },
+
+
     async getUserDetail() {
-      const { data } = await getUserApi();
+      const { data } = await getUserById();
       this.currentUser = data.data;
     },
+
     onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
@@ -153,12 +174,13 @@ export default {
         }
       }, 1000);
     },
+    
     onRefresh() {
       setTimeout(() => {
         this.isLoading = false;
       }, 1000);
     },
-  },
+  }, // method
   computed: {
     ...mapState(["user"]),
   },
