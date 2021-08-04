@@ -151,23 +151,16 @@
 </template>
 
 <script>
-import ChannelEdit from "@/components/ChannelEdit";
-import ArticleList from "@/components/ArticleList";
 import NavBar from "@/components/NavBar";
-// import { getUserChannel } from "@/api/user";
 import { mapState } from "vuex";
-// import { getItem } from "@/utils/storage";
 export default {
   name: "Home",
   components: {
-    ChannelEdit,
-    ArticleList,
     NavBar,
   },
   data() {
     return {
       active: 0,
-      // channelList: [],
       showSearchBoard: false,
       activityList: [
         {
@@ -306,7 +299,6 @@ export default {
     };
   },
   created() {
-    // this.getChannels();
   },
   computed: {
     ...mapState(["user"]),
@@ -315,30 +307,11 @@ export default {
     user() {
       this.active = 0;
     },
-    // channelList(newval) {
-    //   console.log("userchannel", newval);
-    // },
   },
   methods: {
     toUserInfo() {
       this.$router.push("/profile");
     },
-    // async getChannels() {
-    //   let channels = [];
-    //   if (this.user) {
-    //     const { data } = await getUserChannel();
-    //     console.log("login channel", data);
-    //     channels = data.data.channels;
-    //   } else {
-    //     const localChannels = getItem("userChannel");
-    //     if (localChannels) {
-    //       channels = localChannels;
-    //     } else {
-    //       const { data } = await getUserChannel();
-    //       channels = data.data.channels;
-    //     }
-    //   }
-    //   this.channelList = channels;
     // },
     onLoad() {
       // 异步更新数据
@@ -347,7 +320,6 @@ export default {
         for (let i = 0; i < 15; i++) {
           this.list.push(this.list.length + 1);
         }
-
         // 加载状态结束
         this.loading = false;
 
@@ -459,7 +431,7 @@ export default {
     &:before {
       content: "";
       width: 1px;
-      background: url("../assets/img/line.png") no-repeat;
+      background: url("../../assets/img/line.png") no-repeat;
       background-size: contain;
       position: absolute;
       left: 0;
