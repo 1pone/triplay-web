@@ -64,7 +64,7 @@ export default {
       // 保存用户标签
       let res = await saveUserLabel({userId ,labelList});
       console.log(res);
-      // if(res.)
+      this.$router.push("/");
     },
     skip() {
       this.$router.push("/");
