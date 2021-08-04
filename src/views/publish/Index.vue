@@ -49,11 +49,21 @@
         <van-field
           readonly
           clickable
-          name="time"
-          :value="activity.time"
-          label="时间"
-          placeholder="请选择活动时间"
-          @click="showTimePicker = true"
+          name="startTime"
+          :value="activity.startTime"
+          label="开始时间"
+          placeholder="请选择活动开始时间"
+          @click="showStartTimePicker = true"
+          :rules="[{ required: true }]"
+        />
+        <van-field
+          readonly
+          clickable
+          name="endTime"
+          :value="activity.endTime"
+          label="结束时间"
+          placeholder="请选择活动结束时间"
+          @click="showEndTimePicker = true"
           :rules="[{ required: true }]"
         />
         <van-field name="num" label="人数" :rules="[{ required: true }]">
@@ -114,12 +124,19 @@
       />
     </van-popup>
 
-    <van-calendar v-model="showDatePicker" @confirm="onDateConfirm" type="range" />
-    <van-popup v-model="showTimePicker" position="bottom">
+    <van-calendar v-model="showDatePicker" @confirm="onDateConfirm"/>
+    <van-popup v-model="showStartTimePicker" position="bottom">
       <van-datetime-picker
         type="time"
-        @confirm="onTimeConfirm"
-        @cancel="showTimePicker = false"
+        @confirm="onStartTimeConfirm"
+        @cancel="showStartTimePicker = false"
+      />
+    </van-popup>
+    <van-popup v-model="showEndTimePicker" position="bottom">
+      <van-datetime-picker
+        type="time"
+        @confirm="onEndTimeConfirm"
+        @cancel="showEndTimePicker = false"
       />
     </van-popup>
   </div>
@@ -144,7 +161,8 @@ export default {
         title: "",
         intro: "",
         date: "",
-        time: "",
+        startTime: "",
+        endTime: "",
         num: 2,
         invited: []
       },
@@ -152,7 +170,8 @@ export default {
       pattern: /^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@trip.com/,
       showTypePicker: false,
       showDatePicker: false,
-      showTimePicker: false,
+      showStartTimePicker: false,
+      showEndTimePicker: false,
       activityList: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"]
     };
   },
@@ -181,17 +200,17 @@ export default {
       this.activity.tpye = type;
       this.showTypePicker = false;
     },
-    formatDate(date) {
-      return `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
-    },
     onDateConfirm(date) {
-      const [start, end] = date;
-      this.activity.date = `${this.formatDate(start)} - ${this.formatDate(end)}`;
+      this.activity.date = `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
       this.showDatePicker = false;
     },
-    onTimeConfirm(time) {
-      this.activity.time = time;
-      this.showTimePicker = false;
+    onStartTimeConfirm(time) {
+      this.activity.startTime = time;
+      this.showStartTimePicker = false;
+    },
+    onEndTimeConfirm(time) {
+      this.activity.endTime = time;
+      this.showEndTimePicker = false;
     },
     // 提交时逻辑
     onSubmit(values) {
