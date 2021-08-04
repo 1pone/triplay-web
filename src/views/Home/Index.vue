@@ -30,7 +30,7 @@
       >
         <van-cell-group class="activity-group" inset>
           <van-cell v-for="(a, i) of activityList" :key="i"
-            ><van-row
+            ><van-row @click="$router.push('/activity')"
               ><van-col span="8"
                 ><van-image
                   class="img-activity"
