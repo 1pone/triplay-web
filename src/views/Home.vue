@@ -13,7 +13,7 @@
       round
       size="small"
       @click="showSearchBoard = true"
-      >搜索</van-button
+      >筛选 / 搜索</van-button
     >
 
     <van-pull-refresh
@@ -28,7 +28,22 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <van-cell v-for="item in list" :key="item" :title="item" />
+        <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
+        <van-cell-group inset>
+          <van-cell
+            ><van-row
+              ><van-col span="8"><van-image class="img-activity" src="https://baike.baidu.com/pic/%E4%B9%92%E4%B9%93%E7%90%83/221415/1/f9dcd100baa1cd11728b23abf158dffcc3cec2fd87ac?fr=lemma&ct=single" alt="pingpong"></van-image></van-col
+              ><van-col span="16">活动信息</van-col></van-row
+            ></van-cell
+          >
+
+          <van-cell
+            ><van-row
+              ><van-col span="8">活动图片</van-col
+              ><van-col span="16">活动信息</van-col></van-row
+            ></van-cell
+          >
+        </van-cell-group>
       </van-list>
     </van-pull-refresh>
     <div class="ph"></div>
@@ -44,7 +59,7 @@
       round
       :style="{ height: '65%', background: '#2377e2' }"
     >
-      <div style="margin-top:2.5rem">
+      <div style="margin-top: 2.5rem">
         <van-cell-group class="publish-form" inset>
           <van-form ref="searchForm" @submit="onSearch">
             <van-field
@@ -88,7 +103,7 @@
           </van-form>
         </van-cell-group>
       </div>
-      <div style="margin-top:1rem">
+      <div style="margin-top: 1rem">
         <van-button
           class="btn-search-confirm"
           block
@@ -131,7 +146,7 @@ export default {
   components: {
     ChannelEdit,
     ArticleList,
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -144,7 +159,7 @@ export default {
         type: "",
         date: "",
         time: "",
-        num: 2
+        num: 2,
       },
       activity: {},
       loading: false,
@@ -157,15 +172,15 @@ export default {
       img: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
-        imgAlt: "userPhoto"
-      }
+        imgAlt: "userPhoto",
+      },
     };
   },
   created() {
     this.getChannels();
   },
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
   },
   watch: {
     user() {
@@ -173,7 +188,7 @@ export default {
     },
     channelList(newval) {
       console.log("userchannel", newval);
-    }
+    },
   },
   methods: {
     toUserInfo() {
@@ -224,8 +239,9 @@ export default {
       this.showTypePicker = false;
     },
     onDateConfirm(date) {
-      this.search.date = `${date.getYear() + 1900}/${date.getMonth() +
-        1}/${date.getDate()}`;
+      this.search.date = `${date.getYear() + 1900}/${
+        date.getMonth() + 1
+      }/${date.getDate()}`;
       this.showDatePicker = false;
     },
     onTimeConfirm(time) {
@@ -235,8 +251,8 @@ export default {
     onSearch(value) {
       console.log("search", value);
       this.showSearchBoard = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
