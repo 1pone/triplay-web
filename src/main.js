@@ -37,7 +37,9 @@ import {
   Progress,
   List,
   Search,
-  Stepper
+  Stepper,
+  Step,
+  Steps,
 } from 'vant'
 
 const plugins = [
@@ -70,7 +72,9 @@ const plugins = [
   Progress,
   List,
   Search,
-  Stepper
+  Stepper,
+  Step,
+  Steps,
 ]
 import '@/assets/icons/iconfont.css'
 import '@/assets/css/global.less'
