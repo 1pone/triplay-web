@@ -14,14 +14,14 @@
           $router.push({
             name: 'login',
             query: {
-              redirect: '/my',
-            },
+              redirect: '/my'
+            }
           })
         "
       >
         <img class="mobile" src="@/assets/img/mobile.png" alt="" />
       </div>
-      <div class="text">登录 / 注册</div>
+      <div class="text">登录</div>
     </div>
     <!-- -->
     <!-- <van-grid class="nav-grid mb-4" :column-num="2">
@@ -38,73 +38,76 @@
         text="历史"
       />
     </van-grid> -->
-    <van-tabs v-model="active" swipeable animated>
-      <van-tab title="发布">
-        <van-pull-refresh
-          v-model="isLoading"
-          success-text="刷新成功"
-          @refresh="onRefresh"
-          offest="100"
-        >
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
+    <div v-if="user">
+      <van-tabs v-model="active" swipeable animated>
+        <van-tab title="发布">
+          <van-pull-refresh
+            v-model="isLoading"
+            success-text="刷新成功"
+            @refresh="onRefresh"
+            offest="100"
           >
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list>
-        </van-pull-refresh>
-      </van-tab>
-      <van-tab title="抱团"
-        ><van-pull-refresh
-          v-model="isLoading"
-          success-text="刷新成功"
-          @refresh="onRefresh"
-          offest="100"
-        >
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="onLoad"
+            >
+              <van-cell v-for="item in list" :key="item" :title="item" />
+            </van-list>
+          </van-pull-refresh>
+        </van-tab>
+        <van-tab title="抱团"
+          ><van-pull-refresh
+            v-model="isLoading"
+            success-text="刷新成功"
+            @refresh="onRefresh"
+            offest="100"
           >
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list> </van-pull-refresh
-      ></van-tab>
-      <van-tab title="受邀"
-        ><van-pull-refresh
-          v-model="isLoading"
-          success-text="刷新成功"
-          @refresh="onRefresh"
-          offest="100"
-        >
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="onLoad"
+            >
+              <van-cell v-for="item in list" :key="item" :title="item" />
+            </van-list> </van-pull-refresh
+        ></van-tab>
+        <van-tab title="受邀"
+          ><van-pull-refresh
+            v-model="isLoading"
+            success-text="刷新成功"
+            @refresh="onRefresh"
+            offest="100"
           >
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list> </van-pull-refresh
-      ></van-tab>
-      <van-tab title="历史"
-        ><van-pull-refresh
-          v-model="isLoading"
-          success-text="刷新成功"
-          @refresh="onRefresh"
-          offest="100"
-        >
-          <van-list
-            v-model="loading"
-            :finished="finished"
-            finished-text="没有更多了"
-            @load="onLoad"
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="onLoad"
+            >
+              <van-cell v-for="item in list" :key="item" :title="item" />
+            </van-list> </van-pull-refresh
+        ></van-tab>
+        <van-tab title="历史"
+          ><van-pull-refresh
+            v-model="isLoading"
+            success-text="刷新成功"
+            @refresh="onRefresh"
+            offest="100"
           >
-            <van-cell v-for="item in list" :key="item" :title="item" />
-          </van-list> </van-pull-refresh
-      ></van-tab>
-    </van-tabs>
+            <van-list
+              v-model="loading"
+              :finished="finished"
+              finished-text="没有更多了"
+              @load="onLoad"
+            >
+              <van-cell v-for="item in list" :key="item" :title="item" />
+            </van-list> </van-pull-refresh
+        ></van-tab>
+      </van-tabs>
+    </div>
+    <div v-else class="info-login">请先登录～</div>
   </div>
 </template>
 
@@ -117,11 +120,12 @@ export default {
   name: "My",
   data() {
     return {
+      active: 0,
       currentUser: {},
       userImg: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
-        imgAlt: "userPhoto",
+        imgAlt: "userPhoto"
       },
       list: [],
       loading: false,
@@ -135,10 +139,11 @@ export default {
         activityStatusList:[],
         userActivityStatusList:[]
       },
+      finished: false
     };
   },
   components: {
-    NavBar,
+    NavBar
   },
   methods: {
 
@@ -182,13 +187,13 @@ export default {
     },
   }, // method
   computed: {
-    ...mapState(["user"]),
+    ...mapState(["user"])
   },
   activated() {
     if (this.user) {
       this.getUserDetail();
     }
-  },
+  }
 };
 </script>
 
@@ -267,21 +272,21 @@ export default {
     }
   }
   // 标签页融合nav-bar
-  // /deep/ .van-tabs__nav{
-  //   background-color: #2377e2;
-  // }
-  // /deep/ .van-tab__text{
-  //   color: #ffffff;
-  // }
+  /deep/ .van-tabs__nav {
+    background-color: #2377e2;
+  }
+  /deep/ .van-tab__text {
+    color: #ffffff;
+  }
 
-  /deep/ .van-tabs__wrap{
+  /deep/ .van-tabs__wrap {
     height: 1.05rem;
   }
   /deep/ .van-tabs__line {
-    // background-color: #ff9914;
-    background-color: #2377e2;
+    background-color: #ff9914;
+    // background-color: #2377e2;
   }
-  
+
   /deep/ .nav-grid {
     .nav-grid-item {
       height: 70px;
@@ -296,13 +301,20 @@ export default {
       }
       .van-grid-item__text {
         font-size: 14px;
-        color: #333333;
+        color: #646566;
       }
     }
   }
   .logout-cell {
     text-align: center;
     color: #d86262;
+  }
+  .info-login {
+    font-size: 16px;
+    text-align: center;
+    align-items: center;
+    margin-top: 3rem;
+    color: #3f3f3f;
   }
 }
 </style>
