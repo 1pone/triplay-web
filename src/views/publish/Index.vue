@@ -79,7 +79,6 @@
           placeholder="请输入活动地点"
           :rules="[{ required: true }]"
         />
-        <van-field
         <van-field name="num" label="人数" :rules="[{ required: true }]">
           <template #input>
             <van-stepper v-model="activity.num" />
