@@ -2,7 +2,7 @@
   <div class="my-page">
     <!-- 已登录 -->
     <nav-bar
-      v-if="user"
+      v-if="isLogin"
       title="我的"
       :imgSrc="userImg.imgSrc"
       :imgAlt="userImg.imgAlt"
@@ -38,7 +38,7 @@
         text="历史"
       />
     </van-grid> -->
-    <div v-if="user">
+    <div v-if="isLogin">
       <van-tabs v-model="active" swipeable animated>
         <van-tab title="发布">
           <van-pull-refresh
@@ -120,6 +120,8 @@ export default {
   name: "My",
   data() {
     return {
+      typeMap: ["篮球", "足球", "羽毛球", "乒乓球", "狼人杀", "剧本杀"],
+      isLogin: true,
       active: 0,
       currentUser: {},
       userImg: {
@@ -127,38 +129,49 @@ export default {
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
         imgAlt: "userPhoto"
       },
-      list: [],
+      publishActivityList: [],
+      baotuanActivityList: [],
+      invitedActivityList: [],
+      historyActivityList: [],
       loading: false,
       isLoading: false,
       finished: false,
 
       publishReqParam:{
+        userId:"",
         page:1,
         limit:10,
-        full:true,
+        hasHC:false,
+        typeList:[],
         statusList:[],
         sessionType: 1
       },
       baotuanReqParam:{
+        userId:"",
         page:1,
         limit:10,
-        full:true,
+        hasHC:false,
+        typeList:[],
         statusList:[],
-        sessionType: 1
+        sessionType: 2
       },
       invitedReqParam:{
+        userId:"",
         page:1,
         limit:10,
-        full:true,
+        hasHC:false,
+        typeList:[],
         statusList:[],
-        sessionType: 1
+        sessionType: 3
       },
       historyReqParam:{
+        userId:"",
         page:1,
         limit:10,
-        full:true,
+        hasHC:false,
+        typeList:[],
         statusList:[],
-        sessionType: 1
+        sessionType: 4
       },
       
       finished: false
@@ -167,37 +180,78 @@ export default {
   components: {
     NavBar
   },
+
+  created() {
+    this.getUserPublishActivity(this.publishReqParam);
+  },
   methods: {
 
     /**
      * yhy 添加获取数据方法
      */
     // 获取用户的发布的活动
-    async getUserPublishActivity(){
-      const res = getUserActivity(this.publishReqParam);
-      if(publishReqParam.page < res.data.page.totalPage)
-        publishReqParam.page++;
-      return res.data;
+    async getUserPublishActivity(reqParam){
+      console.log(reqParam)
+      reqParam={
+        page:1,
+        limit:10,
+        hasHC:false,
+        typeList:[],
+        statusList:[],
+      }
+      const res = await getUserActivity(reqParam);
+      console.log(res)
+      if(res.data.code != "0"){
+        this.isLogin = false;
+        return;
+      }
+      if(reqParam.page && reqParam.page < res.data.data.pages)
+        reqParam.page++;
+
+      let records = res.data.data.records;
+      console.log('records', records)
+
+      records.forEach(item => {
+        console.log(item)
+        let activaty = {
+          img:{},
+          info:{
+            type: this.typeMap[item.type],
+            title: item.name,
+            intro: item.summary,
+            startTime: item.startTime,
+            endTime: item.endTime,
+            place: item.location,
+            targetNum: item.participantNumber,
+            nowNum: item.currentNumber
+          }
+        }
+        this.publishActivityList.push(activaty);
+        console.log(this.activityList)
+      });
     },
     // 获取用户正在抱团中的活动
     async getUserBaotuanActivity(){
       const res = getUserActivity(this.baotuanReqParam);
-      if(baotuanReqParam.page < res.data.page.totalPage)
-        baotuanReqParam.page++;
+      if(this.baotuanReqParam.page < res.data.page.totalPage)
+        this.baotuanReqParam.page++;
+      console.log(res.data)
       return res.data;
     },
     // 获取用户的受邀活动
     async getUserInvitedActivity(){
       const res = getUserActivity(this.invitedReqParam);
-      if(invitedReqParam.page < res.data.page.totalPage)
-        invitedReqParam.page++;
+      if(this.invitedReqParam.page < res.data.page.totalPage)
+        this.invitedReqParam.page++;
+      console.log(res.data)
       return res.data;
     },
     // 获取用户的历史活动
     async getUserHistoryActivity(){
       const res = getUserActivity(this.historyReqParam);
-      if(historyReqParam.page < res.data.page.totalPage)
-        historyReqParam.page++;
+      if(this.historyReqParam.page < res.data.page.totalPage)
+        this.historyReqParam.page++;
+      console.log(res.data)
       return res.data;
     },
 
@@ -230,6 +284,7 @@ export default {
       }, 1000);
     },
   }, // method
+
   computed: {
     ...mapState(["user"])
   },
