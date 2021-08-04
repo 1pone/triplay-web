@@ -1,7 +1,7 @@
 import api from '@/utils/request'
 
 export const getLabelPage = (page, limit) => {
-  return api('get', `/label/list?page=${page}&$limit=${limit}`)
+  return api('get', `/label/list?page=${page}&limit=${limit}`)
 }
 
 export const saveUserLabel = (labelList) => {
