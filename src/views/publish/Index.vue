@@ -12,8 +12,8 @@
         <van-field
           readonly
           clickable
-          :value="activity.tpye"
-          name="tpye"
+          :value="activity.type"
+          name="type"
           label="类型"
           placeholder="请选择活动类型"
           @click="showTypePicker = true"
@@ -24,6 +24,13 @@
           name="title"
           label="标题"
           placeholder="请输入活动标题"
+          :rules="[{ required: true }]"
+        />
+        <van-field
+          v-model="activity.location"
+          name="location"
+          label="地点"
+          placeholder="请输入活动地点"
           :rules="[{ required: true }]"
         />
         <van-field
@@ -157,8 +164,9 @@ export default {
       username: "",
       password: "",
       activity: {
-        tpye: "",
+        type: "",
         title: "",
+        location: "",
         intro: "",
         date: "",
         startTime: "",
@@ -197,11 +205,11 @@ export default {
         .catch(() => {});
     },
     onTypeConfirm(type) {
-      this.activity.tpye = type;
+      this.activity.type = type;
       this.showTypePicker = false;
     },
     onDateConfirm(date) {
-      this.activity.date = `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
+      this.activity.date = `${date.getYear() + 1900}-${date.getMonth() + 1}-${date.getDate()}`;
       this.showDatePicker = false;
     },
     onStartTimeConfirm(time) {
@@ -216,14 +224,17 @@ export default {
     onSubmit(values) {
       console.log("submit", values);
       let req = {
-        tpye: this.type,
-        name: this.title,
-        summary: this.intro,
-        start: this.date,
-        time: this.time,
-        participantNumber: this.num,
-        emailList: this.invited
+        tpye: this.activity.type,
+        name: this.activity.title,
+        location: this.activity.location,
+        summary: this.activity.intro,
+        startTime: this.activity.date + ' ' + this.activity.startTime + ':00',
+        endTime: this.activity.date + ' ' + this.activity.endTime + ':00',
+        participantNumber: this.activity.num,
+        expireTime: new Date(this.activity.time - 2*60*60*1000),
+        emailList: this.activity.invited
       }
+      console.log(req);
       const res = this.submit(req);
       console.log(res);
 
