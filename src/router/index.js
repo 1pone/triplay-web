@@ -51,13 +51,54 @@ const routes = [
     name: 'profile',
     component: () =>
       import('@/views/profile/Index'),
-    meta: { isUser: true }
+    meta: { isUser: false }
   },
   {
     path: '/activity',
     name: 'activity',
     component: () =>
       import('@/views/Activity'),
+    meta: {
+      isUser: false,
+      footShow: true
+    }
+  },
+  ///////////////////////// 
+  {
+    path: '/baotuan',
+    name: 'baotuan',
+    component: () =>
+      import('@/views/temp/baotuan'),
+    meta: {
+      isUser: false,
+      footShow: true
+    }
+  },
+  {
+    path: '/lishi',
+    name: 'lishi',
+    component: () =>
+      import('@/views/temp/lishi'),
+    meta: {
+      isUser: false,
+      footShow: true
+    }
+  },
+  {
+    path: '/souyao',
+    name: 'souyao',
+    component: () =>
+      import('@/views/temp/souyao'),
+    meta: {
+      isUser: false,
+      footShow: true
+    }
+  },
+  {
+    path: '/fabu',
+    name: 'fabu',
+    component: () =>
+      import('@/views/temp/fabu'),
     meta: {
       isUser: false,
       footShow: true

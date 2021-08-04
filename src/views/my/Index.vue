@@ -14,8 +14,8 @@
           $router.push({
             name: 'login',
             query: {
-              redirect: '/my'
-            }
+              redirect: '/my',
+            },
           })
         "
       >
@@ -53,7 +53,43 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in publishActivityList" :key="item" :title="item" />
+              <van-cell-group class="activity-group" inset>
+                <van-cell v-for="(a, i) of publishActivityList" :key="i"
+                  ><van-row @click="$router.push('/fabu')"
+                    ><van-col span="8"
+                      ><van-image
+                        class="img-activity"
+                        fit="cover"
+                        :src="a.img.imgSrc"
+                        :alt="a.img.imgAlt"
+                      ></van-image></van-col
+                    ><van-col span="16">
+                      <div class="info-wrapper">
+                        <div class="info-text">
+                          <p class="info-text-title">
+                            【{{ a.info.type }}】{{ a.info.title }}
+                          </p>
+                          <p class="info-text-intro">
+                            {{ a.info.intro }}
+                          </p>
+                          <p>
+                            时间：{{ a.info.date }} {{ a.info.startTime }}-{{
+                              a.info.endTime
+                            }}
+                          </p>
+                          <p>地点：{{ a.info.place }}</p>
+                        </div>
+                        <div class="info-rate">
+                          <van-progress
+                            :pivot-text="a.info.nowNum + '/' + a.info.targetNum"
+                            :percentage="
+                              (a.info.nowNum / a.info.targetNum) * 100
+                            "
+                          />
+                        </div>
+                      </div> </van-col></van-row
+                ></van-cell>
+              </van-cell-group>
             </van-list>
           </van-pull-refresh>
         </van-tab>
@@ -70,9 +106,47 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in baotuanActivityList" :key="item" :title="item" />
-            </van-list> </van-pull-refresh
-        ></van-tab>
+              <van-cell-group class="activity-group" inset>
+                <van-cell v-for="(a, i) of baotuanActivityList" :key="i"
+                  ><van-row @click="$router.push('/baotuan')"
+                    ><van-col span="8"
+                      ><van-image
+                        class="img-activity"
+                        fit="cover"
+                        :src="a.img.imgSrc"
+                        :alt="a.img.imgAlt"
+                      ></van-image></van-col
+                    ><van-col span="16">
+                      <div class="info-wrapper">
+                        <div class="info-text">
+                          <p class="info-text-title">
+                            【{{ a.info.type }}】{{ a.info.title }}
+                          </p>
+                          <p class="info-text-intro">
+                            {{ a.info.intro }}
+                          </p>
+                          <p>
+                            时间：{{ a.info.date }} {{ a.info.startTime }}-{{
+                              a.info.endTime
+                            }}
+                          </p>
+                          <p>地点：{{ a.info.place }}</p>
+                        </div>
+                        <div class="info-rate">
+                          <van-progress
+                            :pivot-text="a.info.nowNum + '/' + a.info.targetNum"
+                            :percentage="
+                              (a.info.nowNum / a.info.targetNum) * 100
+                            "
+                          />
+                        </div>
+                      </div> </van-col></van-row
+                ></van-cell>
+              </van-cell-group>
+            </van-list>
+          </van-pull-refresh>
+          </van-tab
+        >
         <van-tab title="受邀"
           ><van-pull-refresh
             v-model="isLoading"
@@ -86,7 +160,43 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in invitedActivityList" :key="item" :title="item" />
+              <van-cell-group class="activity-group" inset>
+                <van-cell v-for="(a, i) of invitedActivityList" :key="i"
+                  ><van-row @click="$router.push('/souyao')"
+                    ><van-col span="8"
+                      ><van-image
+                        class="img-activity"
+                        fit="cover"
+                        :src="a.img.imgSrc"
+                        :alt="a.img.imgAlt"
+                      ></van-image></van-col
+                    ><van-col span="16">
+                      <div class="info-wrapper">
+                        <div class="info-text">
+                          <p class="info-text-title">
+                            【{{ a.info.type }}】{{ a.info.title }}
+                          </p>
+                          <p class="info-text-intro">
+                            {{ a.info.intro }}
+                          </p>
+                          <p>
+                            时间：{{ a.info.date }} {{ a.info.startTime }}-{{
+                              a.info.endTime
+                            }}
+                          </p>
+                          <p>地点：{{ a.info.place }}</p>
+                        </div>
+                        <div class="info-rate">
+                          <van-progress
+                            :pivot-text="a.info.nowNum + '/' + a.info.targetNum"
+                            :percentage="
+                              (a.info.nowNum / a.info.targetNum) * 100
+                            "
+                          />
+                        </div>
+                      </div> </van-col></van-row
+                ></van-cell>
+              </van-cell-group>
             </van-list> </van-pull-refresh
         ></van-tab>
         <van-tab title="历史"
@@ -102,7 +212,43 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in historyActivityList" :key="item" :title="item" />
+              <van-cell-group class="activity-group" inset>
+                <van-cell v-for="(a, i) of historyActivityList" :key="i"
+                  ><van-row @click="$router.push('/lishi')"
+                    ><van-col span="8"
+                      ><van-image
+                        class="img-activity"
+                        fit="cover"
+                        :src="a.img.imgSrc"
+                        :alt="a.img.imgAlt"
+                      ></van-image></van-col
+                    ><van-col span="16">
+                      <div class="info-wrapper">
+                        <div class="info-text">
+                          <p class="info-text-title">
+                            【{{ a.info.type }}】{{ a.info.title }}
+                          </p>
+                          <p class="info-text-intro">
+                            {{ a.info.intro }}
+                          </p>
+                          <p>
+                            时间：{{ a.info.date }} {{ a.info.startTime }}-{{
+                              a.info.endTime
+                            }}
+                          </p>
+                          <p>地点：{{ a.info.place }}</p>
+                        </div>
+                        <div class="info-rate">
+                          <van-progress
+                            :pivot-text="a.info.nowNum + '/' + a.info.targetNum"
+                            :percentage="
+                              (a.info.nowNum / a.info.targetNum) * 100
+                            "
+                          />
+                        </div>
+                      </div> </van-col></van-row
+                ></van-cell>
+              </van-cell-group>
             </van-list> </van-pull-refresh
         ></van-tab>
       </van-tabs>
@@ -127,95 +273,280 @@ export default {
       userImg: {
         imgSrc:
           "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/icon_ctrip.png",
-        imgAlt: "userPhoto"
+        imgAlt: "userPhoto",
       },
-      publishActivityList: [],
-      baotuanActivityList: [],
-      invitedActivityList: [],
-      historyActivityList: [],
+      publishActivityList: [
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 11,
+            nowNum: 3,
+          },
+        },
+      ],
+      baotuanActivityList: [{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },],
+      invitedActivityList: [
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 11,
+            nowNum: 3,
+          },
+        }],
+      historyActivityList: [{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 11,
+            nowNum: 3,
+          },
+        },{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 3,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 8,
+            nowNum: 2,
+          },
+        },{
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/pingpong.jpg",
+            imgAlt: "pingpong",
+          },
+          info: {
+            type: "乒乓球",
+            title: "双打交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 4,
+            nowNum: 1,
+          },
+        },
+        {
+          img: {
+            imgSrc:
+              "https://raw.githubusercontent.com/1pone/triplay-web/master/src/assets/img/football.webp",
+            imgAlt: "football",
+          },
+          info: {
+            type: "足球",
+            title: "欢乐交友赛",
+            intro:
+              "水平大概会对拉、简单切削，求同水平好友进行一场紧张刺激的友谊赛！想要寻找球友的小伙伴赶快加入吧！",
+            date: "2021-8-5",
+            startTime: "19：00",
+            endTime: "20：00",
+            place: "15#7F10一号乒乓球桌",
+            targetNum: 24,
+            nowNum: 16,
+          },
+        },],
       loading: false,
       isLoading: false,
       finished: false,
 
-      publishReqParam:{
-        userId:"",
-        page:1,
-        limit:10,
-        hasHC:false,
-        typeList:[],
-        statusList:[],
-        sessionType: 1
+      publishReqParam: {
+        userId: "",
+        page: 1,
+        limit: 10,
+        hasHC: false,
+        typeList: [],
+        statusList: [],
+        sessionType: 1,
       },
-      baotuanReqParam:{
-        userId:"",
-        page:1,
-        limit:10,
-        hasHC:false,
-        typeList:[],
-        statusList:[],
-        sessionType: 2
+      baotuanReqParam: {
+        userId: "",
+        page: 1,
+        limit: 10,
+        hasHC: false,
+        typeList: [],
+        statusList: [],
+        sessionType: 2,
       },
-      invitedReqParam:{
-        userId:"",
-        page:1,
-        limit:10,
-        hasHC:false,
-        typeList:[],
-        statusList:[],
-        sessionType: 3
+      invitedReqParam: {
+        userId: "",
+        page: 1,
+        limit: 10,
+        hasHC: false,
+        typeList: [],
+        statusList: [],
+        sessionType: 3,
       },
-      historyReqParam:{
-        userId:"",
-        page:1,
-        limit:10,
-        hasHC:false,
-        typeList:[],
-        statusList:[],
-        sessionType: 4
+      historyReqParam: {
+        userId: "",
+        page: 1,
+        limit: 10,
+        hasHC: false,
+        typeList: [],
+        statusList: [],
+        sessionType: 4,
       },
-      
-      finished: false
+
+      finished: false,
     };
   },
   components: {
-    NavBar
+    NavBar,
   },
 
   created() {
     this.getUserActivity(this.publishReqParam);
   },
   methods: {
-
     /**
      * yhy 添加获取数据方法
      */
     // 获取用户的发布的活动
-    async getUserActivity(reqParam){
-      console.log(reqParam)
-      reqParam={
-        page:1,
-        limit:10,
-        hasHC:false,
-        typeList:[],
-        statusList:[],
-      }
+    async getUserActivity(reqParam) {
+      console.log(reqParam);
+      reqParam = {
+        page: 1,
+        limit: 10,
+        hasHC: false,
+        typeList: [],
+        statusList: [],
+      };
       const res = await getUserActivity(reqParam);
-      console.log(res)
-      if(res.data.code != "0"){
+      console.log(res);
+      if (res.data.code != "0") {
         this.isLogin = false;
         return;
       }
-      if(reqParam.page && reqParam.page < res.data.data.pages)
-        reqParam.page++;
+      if (reqParam.page && reqParam.page < res.data.data.pages) reqParam.page++;
 
       let records = res.data.data.records;
-      console.log('records', records)
+      console.log("records", records);
 
-      records.forEach(item => {
-        console.log(item)
+      records.forEach((item) => {
+        console.log(item);
         let activaty = {
-          img:{},
-          info:{
+          img: {},
+          info: {
             type: this.typeMap[item.type],
             title: item.name,
             intro: item.summary,
@@ -223,40 +554,48 @@ export default {
             endTime: item.endTime,
             place: item.location,
             targetNum: item.participantNumber,
-            nowNum: item.currentNumber
-          }
-        }
-        switch(reqParam.sessionType){
-          case 1: this.publishActivityList.push(activaty); break;
-          case 2: this.baotuanActivityList.push(activaty); break;
-          case 3: this.invitedActivityList.push(activaty); break;
-          case 4: this.historyActivityList.push(activaty); break;
+            nowNum: item.currentNumber,
+          },
+        };
+        switch (reqParam.sessionType) {
+          case 1:
+            this.publishActivityList.push(activaty);
+            break;
+          case 2:
+            this.baotuanActivityList.push(activaty);
+            break;
+          case 3:
+            this.invitedActivityList.push(activaty);
+            break;
+          case 4:
+            this.historyActivityList.push(activaty);
+            break;
         }
       });
     },
 
     // 获取用户正在抱团中的活动
-    async getUserBaotuanActivity(){
+    async getUserBaotuanActivity() {
       const res = getUserActivity(this.baotuanReqParam);
-      if(this.baotuanReqParam.page < res.data.page.totalPage)
+      if (this.baotuanReqParam.page < res.data.page.totalPage)
         this.baotuanReqParam.page++;
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     },
     // 获取用户的受邀活动
-    async getUserInvitedActivity(){
+    async getUserInvitedActivity() {
       const res = getUserActivity(this.invitedReqParam);
-      if(this.invitedReqParam.page < res.data.page.totalPage)
+      if (this.invitedReqParam.page < res.data.page.totalPage)
         this.invitedReqParam.page++;
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     },
     // 获取用户的历史活动
-    async getUserHistoryActivity(){
+    async getUserHistoryActivity() {
       const res = getUserActivity(this.historyReqParam);
-      if(this.historyReqParam.page < res.data.page.totalPage)
+      if (this.historyReqParam.page < res.data.page.totalPage)
         this.historyReqParam.page++;
-      console.log(res.data)
+      console.log(res.data);
       return res.data;
     },
 
@@ -268,21 +607,24 @@ export default {
     onLoad() {
       // 异步更新数据
       // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-      setTimeout(() => {
-        for (let i = 0; i < 15; i++) {
-          this.list.push(this.list.length + 1);
-        }
+      // setTimeout(() => {
+      //   for (let i = 0; i < 15; i++) {
+      //     this.list.push(this.list.length + 1);
+      //   }
 
-        // 加载状态结束
-        this.loading = false;
-
-        // 数据全部加载完成
-        if (this.list.length >= 40) {
+      //   // 加载状态结束
+        
+      //   // 数据全部加载完成
+      //   if (this.list.length >= 40) {
+      //     this.finished = true;
+      //   }
+      // }, 1000);
+      this.loading = false;
+        setTimeout(()=> {
           this.finished = true;
-        }
-      }, 1000);
+        },1000)
     },
-    
+
     onRefresh() {
       setTimeout(() => {
         this.isLoading = false;
@@ -291,13 +633,13 @@ export default {
   }, // method
 
   computed: {
-    ...mapState(["user"])
+    ...mapState(["user"]),
   },
   activated() {
     if (this.user) {
       this.getUserDetail();
     }
-  }
+  },
 };
 </script>
 
@@ -406,6 +748,40 @@ export default {
       .van-grid-item__text {
         font-size: 14px;
         color: #646566;
+      }
+    }
+  }
+  .activity-group {
+    .img-activity {
+      margin: 5px 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      /deep/ .van-image__img {
+        border-radius: 10px;
+      }
+    }
+    /deep/.van-cell__value {
+      height: 2.7rem;
+    }
+    .info-wrapper {
+      padding: 5px;
+      .info-text,
+      p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        .info-text-title {
+          font-size: 16px;
+          line-height: 22px;
+          margin-left: -0.2rem;
+          font-weight: 500;
+        }
+      }
+      .info-rate {
+        margin-top: 0.25rem;
       }
     }
   }
