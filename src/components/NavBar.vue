@@ -12,7 +12,7 @@
           :src="imgSrc"
           :alt="imgAlt"
           round
-          @click="$router.push('/userProfile')"
+          @click="$router.push('/profile')"
         />
       </template>
     </van-nav-bar>

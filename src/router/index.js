@@ -16,12 +16,12 @@ const routes = [
   {
     path: '/',
     component: () =>
-      import('@/views/Layout'),
+      import('@/views/Index'),
     children: [{
       path: '',
       name: 'home',
       component: () =>
-        import('@/views/Home'),
+        import('@/views/Home/Index'),
       meta: {
         isUser: false,
         footShow: true
@@ -44,20 +44,13 @@ const routes = [
         footShow: true
       }
     },
-    {
-      path: '/search',
-      name: 'search',
-      component: () =>
-        import('@/views/Search'),
-      meta: { isUser: false }
-    }
     ]
   },
   {
-    path: '/userProfile',
-    name: 'user-profile',
+    path: '/profile',
+    name: 'profile',
     component: () =>
-      import('@/views/UserProfile'),
+      import('@/views/profile/Index'),
     meta: { isUser: true }
   },
 ]
