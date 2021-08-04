@@ -53,6 +53,16 @@ const routes = [
       import('@/views/profile/Index'),
     meta: { isUser: true }
   },
+  {
+    path: '/activity',
+    name: 'activity',
+    component: () =>
+      import('@/views/Activity'),
+    meta: {
+      isUser: false,
+      footShow: true
+    }
+  },
 ]
 
 const router = new VueRouter({
