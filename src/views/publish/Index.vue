@@ -128,6 +128,7 @@
 <script>
 import NavBar from "@/components/NavBar";
 import { mapState } from "vuex";
+import { submitActivity } from "@/api/activity"
 export default {
   name: "Publish",
   components: {
@@ -189,10 +190,26 @@ export default {
       this.activity.time = time;
       this.showTimePicker = false;
     },
+    // 提交时逻辑
     onSubmit(values) {
       console.log("submit", values);
+      let req = {
+        tpye: this.type,
+        name: this.title,
+        summary: this.intro,
+        start: this.date,
+        time: this.time,
+        participantNumber: this.num,
+        emailList: this.invited
+      }
+      const res = this.submit(req);
+      console.log(res);
+
       this.$toast.success("发布成功");
       this.$router.push("/");
+    },
+    async submit(req){
+      return await submitActivity(req);
     },
     onAddEmail() {
       if (/^([a-zA-Z]|[0-9])(\w|\-)+@trip.com/.test(this.invitedEmail)) {
