@@ -53,7 +53,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in publishActivityList" :key="item" :title="item" />
             </van-list>
           </van-pull-refresh>
         </van-tab>
@@ -70,7 +70,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in baotuanActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
         <van-tab title="受邀"
@@ -86,7 +86,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in invitedActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
         <van-tab title="历史"
@@ -102,7 +102,7 @@
               finished-text="没有更多了"
               @load="onLoad"
             >
-              <van-cell v-for="item in list" :key="item" :title="item" />
+              <van-cell v-for="item in historyActivityList" :key="item" :title="item" />
             </van-list> </van-pull-refresh
         ></van-tab>
       </van-tabs>
@@ -182,7 +182,7 @@ export default {
   },
 
   created() {
-    this.getUserPublishActivity(this.publishReqParam);
+    this.getUserActivity(this.publishReqParam);
   },
   methods: {
 
@@ -190,7 +190,7 @@ export default {
      * yhy 添加获取数据方法
      */
     // 获取用户的发布的活动
-    async getUserPublishActivity(reqParam){
+    async getUserActivity(reqParam){
       console.log(reqParam)
       reqParam={
         page:1,
@@ -226,10 +226,15 @@ export default {
             nowNum: item.currentNumber
           }
         }
-        this.publishActivityList.push(activaty);
-        console.log(this.activityList)
+        switch(reqParam.sessionType){
+          case 1: this.publishActivityList.push(activaty); break;
+          case 2: this.baotuanActivityList.push(activaty); break;
+          case 3: this.invitedActivityList.push(activaty); break;
+          case 4: this.historyActivityList.push(activaty); break;
+        }
       });
     },
+
     // 获取用户正在抱团中的活动
     async getUserBaotuanActivity(){
       const res = getUserActivity(this.baotuanReqParam);
