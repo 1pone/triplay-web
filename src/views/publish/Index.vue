@@ -185,7 +185,7 @@ export default {
     },
     onDateConfirm(date) {
       const [start, end] = date;
-      this.activity.date = `${this.formatDate(start)}-${this.formatDate(end)}`;
+      this.activity.date = `${this.formatDate(start)} - ${this.formatDate(end)}`;
       this.showDatePicker = false;
     },
     onTimeConfirm(time) {
