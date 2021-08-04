@@ -132,13 +132,35 @@ export default {
       isLoading: false,
       finished: false,
 
-      reqParam:{
+      publishReqParam:{
         page:1,
         limit:10,
         full:true,
         statusList:[],
         sessionType: 1
       },
+      baotuanReqParam:{
+        page:1,
+        limit:10,
+        full:true,
+        statusList:[],
+        sessionType: 1
+      },
+      invitedReqParam:{
+        page:1,
+        limit:10,
+        full:true,
+        statusList:[],
+        sessionType: 1
+      },
+      historyReqParam:{
+        page:1,
+        limit:10,
+        full:true,
+        statusList:[],
+        sessionType: 1
+      },
+      
       finished: false
     };
   },
@@ -150,9 +172,32 @@ export default {
     /**
      * yhy 添加获取数据方法
      */
-    // 获取用户的所有活动
-    async getUserActivity(){
-      const res = getUserActivity(this.reqParam);
+    // 获取用户的发布的活动
+    async getUserPublishActivity(){
+      const res = getUserActivity(this.publishReqParam);
+      if(publishReqParam.page < res.data.page.totalPage)
+        publishReqParam.page++;
+      return res.data;
+    },
+    // 获取用户正在抱团中的活动
+    async getUserBaotuanActivity(){
+      const res = getUserActivity(this.baotuanReqParam);
+      if(baotuanReqParam.page < res.data.page.totalPage)
+        baotuanReqParam.page++;
+      return res.data;
+    },
+    // 获取用户的受邀活动
+    async getUserInvitedActivity(){
+      const res = getUserActivity(this.invitedReqParam);
+      if(invitedReqParam.page < res.data.page.totalPage)
+        invitedReqParam.page++;
+      return res.data;
+    },
+    // 获取用户的历史活动
+    async getUserHistoryActivity(){
+      const res = getUserActivity(this.historyReqParam);
+      if(historyReqParam.page < res.data.page.totalPage)
+        historyReqParam.page++;
       return res.data;
     },
 
