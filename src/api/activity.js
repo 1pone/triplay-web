@@ -6,3 +6,6 @@ export const getUserActivity = req => {
 export const submitActivity = req => {
   return api('post', '/activity/submit', req)
 }
+export const getActivityDetial = activityId => {
+  return api('post', `activity/info/${activityId}`)
+}

@@ -30,7 +30,7 @@
       >
         <van-cell-group class="activity-group" inset>
           <van-cell v-for="(a, i) of activityList" :key="i"
-            ><van-row @click="$router.push('/activity')"
+            ><van-row @click="jumpToDetial(a.info.activityId)"
               ><van-col span="8"
                 ><van-image
                   class="img-activity"
@@ -319,6 +319,9 @@ export default {
     },
   },
   methods: {
+    jumpToDetial(id){
+      this.$router.push('/activity?activityId=' + id)
+    },
 
     /**
      * yhy 添加获取数据方法
@@ -345,6 +348,7 @@ export default {
         let activaty = {
           img:{},
           info:{
+            activityId: item.activityId,
             type: this.typeMap[item.type],
             title: item.name,
             intro: item.summary,

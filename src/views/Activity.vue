@@ -118,12 +118,22 @@
   </div>
 </template>
 <script>
+import {getActivityDetial} from "@/api/activity"
 export default {
   data() {
     return {
+      activityId:"",
+      detial:{},
+
       isLeavingMes: false,
       leaveMsg: "",
     };
+  },
+  async created(){
+    this.activityId = this.$route.query.activityId;
+    const res = await getActivityDetial(this.activityId);
+    this.detial = res.data.data;
+    console.log(res)
   },
   methods: {
     handleJoin() {
