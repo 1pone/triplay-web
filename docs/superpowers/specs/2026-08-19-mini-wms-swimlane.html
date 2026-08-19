@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>微型仓 WMS 全链路 · 垂直泳道</title>
+  <style>
+    :root {
+      --ink: #222;
+      --line: #333;
+      --user-bg: #eee6f6;
+      --sys-bg: #e6eef7;
+      --start-bg: #d4cbe8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #ececec;
+      color: var(--ink);
+    }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin: 22px 0 6px;
+    }
+    .hint {
+      text-align: center;
+      color: #555;
+      font-size: 13px;
+      margin: 0 0 16px;
+    }
+    .wrap {
+      width: min(1180px, 96vw);
+      margin: 0 auto 36px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+    }
+    .heads, .row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .heads > div {
+      padding: 11px 8px;
+      text-align: center;
+      font-weight: 700;
+      border-bottom: 1.5px solid var(--line);
+      border-right: 1.5px solid var(--line);
+    }
+    .heads > div:last-child { border-right: none; }
+    .row > div {
+      min-height: 76px;
+      padding: 10px 8px;
+      border-right: 1.5px solid var(--line);
+      border-bottom: 1px dashed #cfcfcf;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .row > div:last-child { border-right: none; }
+    .c0, .c1 { background: #fbf8fd; }
+    .c2, .c3 { background: #f7faff; }
+
+    .box {
+      width: 92%;
+      padding: 8px 8px;
+      border: 1.4px solid var(--line);
+      border-radius: 7px;
+      text-align: center;
+      font-size: 12.5px;
+      line-height: 1.45;
+      background: var(--user-bg);
+    }
+    .c2 .box, .c3 .box { background: var(--sys-bg); }
+    .oval {
+      width: 58%;
+      padding: 8px 6px;
+      border: 1.4px solid var(--line);
+      border-radius: 40px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--start-bg);
+    }
+    .arrow-h {
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      width: calc(100% + 8px);
+      height: 0;
+      border-top: 1.5px solid var(--ink);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .arrow-h::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -5px;
+      border: 5px solid transparent;
+      border-left: 8px solid var(--ink);
+    }
+    .arrow-h.span2 { width: calc(200% + 22px); }
+    .arrow-h.span3 { width: calc(300% + 36px); }
+    .arrow-back {
+      position: absolute;
+      left: -12px;
+      top: 64%;
+      width: calc(100% + 6px);
+      height: 0;
+      border-top: 1.4px solid var(--ink);
+      z-index: 2;
+    }
+    .arrow-back::after {
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: -5px;
+      border: 5px solid transparent;
+      border-right: 8px solid var(--ink);
+    }
+    .arrow-back.span2 { width: calc(200% + 20px); left: calc(-100% - 18px); }
+    .v {
+      width: 0;
+      height: 14px;
+      border-left: 1.5px solid var(--ink);
+      margin: 2px auto 0;
+    }
+    .lbl {
+      font-size: 11px;
+      color: #444;
+      margin-top: 4px;
+    }
+    .note {
+      width: min(1180px, 96vw);
+      margin: 0 auto 28px;
+      font-size: 13px;
+      line-height: 1.65;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>垂直泳道</h1>
+  <p class="hint">微型仓 WMS 全链路 · 角色分栏，流程自上而下，横线为跨栏交接</p>
+
+  <div class="wrap">
+    <div class="heads">
+      <div>电商后台</div>
+      <div>运营</div>
+      <div>仓管</div>
+      <div>WMS</div>
+    </div>
+
+    <div class="row">
+      <div class="c0"><div class="oval">开始</div><div class="v"></div></div>
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+    </div>
+
+    <div class="row">
+      <div class="c0">
+        <div class="box">新建 Product / SKU</div>
+        <div class="arrow-h span3"></div>
+      </div>
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3"><div class="box">只读同步商品，不建品</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"><div class="box">维护仓库 / 库区 / 货架-列-层</div></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1">
+        <div class="box">创建采购单</div>
+        <div class="arrow-h"></div>
+      </div>
+      <div class="c2"><div class="box">4b 表单部分收货<br/>搜 Product → 选 SKU</div></div>
+      <div class="c3"></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1">
+        <div class="box">4a 批量收货 Excel（须采购单号）<br/>或期初 Excel（每仓一次）</div>
+        <div class="arrow-h span2"></div>
+      </div>
+      <div class="c2"></div>
+      <div class="c3"><div class="box">入库预检<br/>失败不写库，退回改单/改表</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"></div>
+      <div class="c2">
+        <div class="box">确认上架（可改历史库位建议）</div>
+        <div class="arrow-h"></div>
+      </div>
+      <div class="c3"><div class="box">实物↑ 未锁定↑<br/>回写采购已收/未收 · 记流水</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0">
+        <div class="box">导出订单 Excel</div>
+        <div class="arrow-h"></div>
+      </div>
+      <div class="c1"><div class="box">电话确认并分配 parcel（可不写库位）</div></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1">
+        <div class="box">导入出库 Excel</div>
+        <div class="arrow-h span2"></div>
+      </div>
+      <div class="c2"></div>
+      <div class="c3"><div class="box">出库预检（不写库）</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3">
+        <div class="box">失败：返回预检报告</div>
+        <div class="arrow-back span2"></div>
+        <div class="lbl">退回运营改表再导</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3">
+        <div class="box">通过：按 SKU 推荐存储区现货库位</div>
+        <div class="arrow-back span2"></div>
+        <div class="lbl">推给运营确认</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1">
+        <div class="box">确认推荐库位</div>
+        <div class="arrow-h span2"></div>
+      </div>
+      <div class="c2"></div>
+      <div class="c3"><div class="box">冻结：未锁定↓ 已锁定↑</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"></div>
+      <div class="c2">
+        <div class="box">按确认库位拣货确认</div>
+        <div class="arrow-h"></div>
+      </div>
+      <div class="c3"><div class="box">扣减：已锁定↓ 实物↓</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1"></div>
+      <div class="c2">
+        <div class="box">打包 / 发运</div>
+        <div class="arrow-h"></div>
+      </div>
+      <div class="c3"><div class="box">只改单据状态，不动库存</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"></div>
+      <div class="c1">
+        <div class="box">关闭出库单（可选）</div>
+        <div class="arrow-h span2"></div>
+      </div>
+      <div class="c2"></div>
+      <div class="c3"><div class="box">解冻：已锁定↓ 未锁定↑</div></div>
+    </div>
+
+    <div class="row">
+      <div class="c0"><div class="oval">结束</div></div>
+      <div class="c1"></div>
+      <div class="c2"></div>
+      <div class="c3"></div>
+    </div>
+  </div>
+
+  <div class="note">
+    样式对齐「垂直泳道」：四栏并列，起止为椭圆，步骤为圆角框，跨栏为水平箭头。
+    4a 与 4b 同属到货阶段。出库预检失败不写库。确认库位后才冻结。拣货才扣实物。发运只改状态。
+  </div>
+</body>
+</html>
